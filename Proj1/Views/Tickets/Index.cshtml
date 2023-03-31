@@ -1,0 +1,11 @@
+﻿<h1>Tickets</h1>
+@{
+    for (int i = 0; i < ViewBag.TicketsCount; i++)
+    {
+        <a asp-controller="Questions" 
+            asp-action="GetQuestionById" 
+            asp-route-id="@(i*10+1)"
+            asp-route-ticketIndex="@i">Ticket @(i + 1)</a>
+        <br/>
+    }
+}    

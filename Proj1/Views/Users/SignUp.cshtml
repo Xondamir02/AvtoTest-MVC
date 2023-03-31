@@ -1,0 +1,10 @@
+﻿<h1>SignUp</h1>
+<form class="row g-3 " style="width:400px" asp-controller="Users" asp-action="SignUpPost" enctype="multipart/form-data">
+    <input name="Photo" class="form-control" type="file" />
+    <input name="Name" class="form-control" type="text" placeholder="Name"/>
+    <input name="Username" class="form-control" type="text" placeholder="Username"/>
+    <input name="Password" class="form-control" type="password" placeholder="Password"/>
+    <button  class="form-control" type="submit">Sign Up</button>
+    <a asp-controller="Users" asp-action="SignIn">Sign In</a>
+
+</form>

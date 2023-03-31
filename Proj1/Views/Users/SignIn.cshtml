@@ -1,0 +1,16 @@
+﻿@model SignInUserModel
+
+<h1>Sign In</h1>
+
+<form class="row g-3" style="width: 400px" asp-controller="Users" asp-action="SignInPost">
+    <div >
+        <input name="Username" class="form-control" asp-for="Username" type="text" placeholder="Username"/>
+        <span class="text-danger" asp-validation-for="Username"></span>
+    </div>
+    <div >
+        <input name="Password" class="form-control" asp-for="Password" type="text" placeholder="Password"/>
+        <span class="text-danger" asp-validation-for="Password"></span>
+    </div>
+    <button class="form-control"  type="submit" >Sign In</button>
+    <a class="link-info" asp-controller="Users" asp-action="SignUp">Sign Up</a>
+</form>
