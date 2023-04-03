@@ -108,6 +108,14 @@ namespace Proj1.Controllers
             ViewBag.TicketIndex = ticketIndex;
             ViewBag.CorrectCount = correctCount;
 
+           
+            return View();
+        }
+
+        public IActionResult TicketCards(int ticketIndex, int correctCount)
+        {
+            ViewBag.TicketIndex = ticketIndex;
+            ViewBag.CorrectCount = correctCount;
             return View();
         }
     }
