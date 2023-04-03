@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Proj1.Models;
 using Proj1.Sevices;
 
@@ -7,26 +6,15 @@ namespace Proj1.Controllers
 {
     public class UsersController : Controller
     {
+
         [HttpGet]
-        public IActionResult SignIn()
+        public IActionResult SignUp()
         {
             return View();
         }
-       
 
-        [HttpPost]
-        public IActionResult SignIn(SignInUserModel signInUserModel)
-        {
-            var user = UserService.Users.FirstOrDefault(u => u.Username == signInUserModel.Username
-            && u.Password == signInUserModel.Password);
 
-            if (user == null)
-                return RedirectToAction("SignIn");
 
-            HttpContext.Response.Cookies.Append("UserId", user.Id);
-
-            return RedirectToAction("Index","Home");
-        }
         [HttpPost]
         public IActionResult SignUp(CreateUserModel createUser)
         {
@@ -48,10 +36,24 @@ namespace Proj1.Controllers
                 Password = createUser.Password,
                 Username = createUser.Username,
                 PhotoPath = SavePhoto(createUser.Photo),
-                TicketResults = new List<TicketResult>(),
-                AnsweredQuestion=new List<Answered>()
+                UserTickets = new List<UserTickets>()
 
             };
+
+            var questions = QuestionService.Instance.Questions;
+            var ticketsCount = questions.Count / 10;
+
+            for (int i = 0; i < ticketsCount; i++)
+            {
+                var startIndex = i * 10 + 1;
+                user.UserTickets.Add(new UserTickets()
+                {
+                    Index = i,
+                    CurrentQuestionIndex = startIndex,
+                    StartIndex = startIndex,
+                    QuestionsCount = 10
+                });
+            }
 
             UserService.Users.Add(user);
 
@@ -59,11 +61,34 @@ namespace Proj1.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+
+
+
+        
+
         [HttpGet]
-        public IActionResult SignUp()
+        public IActionResult SignIn()
         {
             return View();
         }
+
+
+        [HttpPost]
+        public IActionResult SignIn(SignInUserModel signInUserModel)
+        {
+            var user = UserService.Users.FirstOrDefault(u => u.Username == signInUserModel.Username
+            && u.Password == signInUserModel.Password);
+
+            if (user == null)
+                return RedirectToAction("SignIn");
+
+            HttpContext.Response.Cookies.Append("UserId", user.Id);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
         public IActionResult Profile()
         {
             if (HttpContext.Request.Cookies.ContainsKey("UserId"))
@@ -79,6 +104,13 @@ namespace Proj1.Controllers
 
             return RedirectToAction("SignUp");
         }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Response.Cookies.Delete("UserId");
+            return RedirectToAction("SignIn");
+        }
+
         private string SavePhoto(IFormFile file)
         {
             if (!Directory.Exists("wwwroot/UserImages"))
@@ -88,14 +120,9 @@ namespace Proj1.Controllers
             var ms = new MemoryStream();
             file.CopyTo(ms);
             System.IO.File.WriteAllBytes(Path.Combine("wwwroot", "UserImages", fileName), ms.ToArray());
+
             return "/UserImages/" + fileName;
         }
-        public IActionResult LogOut()
-        {
-            HttpContext.Response.Cookies.Delete("UserId");
-            return RedirectToAction("Index","Home");
-        }
-
 
         [HttpGet]
         public IActionResult ChangeName()
@@ -112,7 +139,7 @@ namespace Proj1.Controllers
             user.Name = changeUserModel.Name;
 
             HttpContext.Response.Cookies.Append("UserId", user.Id);
-            
+
             return RedirectToAction("Profile");
 
         }
@@ -129,7 +156,7 @@ namespace Proj1.Controllers
 
             var user = UserService.Users.FirstOrDefault(u => u.Id == changeUserModel.Id);
 
-            user.Username=changeUserModel.Username;
+            user.Username = changeUserModel.Username;
 
             HttpContext.Response.Cookies.Append("UserId", user.Id);
 
@@ -147,7 +174,7 @@ namespace Proj1.Controllers
 
             var user = UserService.Users.FirstOrDefault(u => u.Id == changeUserModel.Id);
 
-            user.Password= changeUserModel.Password;
+            user.Password = changeUserModel.Password;
 
             HttpContext.Response.Cookies.Append("UserId", user.Id);
 
@@ -172,6 +199,7 @@ namespace Proj1.Controllers
 
             return RedirectToAction("Profile");
         }
-       
     }
 }
+
+   

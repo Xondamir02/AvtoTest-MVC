@@ -66,6 +66,20 @@ body {
     border-radius: 11px;
     color: white;
 }
+.number-2 {
+    width: 80px;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+    
+    border-radius: 11px;
+    color: white;
+}
+    .number-2:hover {
+        
+        color: black;
+        transform: translateY(-5px);
+    }
 
 .number:hover {
         background-color: gold;

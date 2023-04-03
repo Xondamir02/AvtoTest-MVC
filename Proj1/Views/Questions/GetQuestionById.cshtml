@@ -1,84 +1,101 @@
 ﻿@using AutoTestBot.Models;
+@model User
+
 @{
     if (ViewBag.IsSuccess == true)
     {
         QuestionModel question = ViewBag.Question;
-       
+        UserTickets ticket = ViewBag.Ticket;
 
-        <div class="buttonCenter">  @for (int i = 0; i < 10; i++)
+        bool isCorrectAnswer = false;
+        int choiceIndex = 0;
+        bool isAnswer = ViewBag.IsAnswer;
+
+        if (isAnswer)
         {
-            <a asp-controller="Questions" asp-action="GetQuestionById" asp-route-Id="@(i+1)"  class=" number btn btn-primary">@(i+1)</a>
+            choiceIndex = ViewBag.ChoiceIndex;
+            isCorrectAnswer = ViewBag.IsCorrectAnswer;
         }
-        
-        </div>
-        
-        
+
+
+        for (int i = 0; i < ticket.QuestionsCount; i++)
+        {
+            var questionIndex = ticket.StartIndex + i;
+            var answer = ticket.Answers.FirstOrDefault(q => q.QuestionIndex == questionIndex);
+            var tagClass = "btn number btn-primary";
+
+            if (answer != null)
+            {
+                if (questionIndex == question.Id)
+                {
+                    isAnswer = true;
+                    choiceIndex = answer.ChoiceIndex;
+                    isCorrectAnswer = answer.CorrectIndex == answer.ChoiceIndex;
+                }
+
+                if (answer.CorrectIndex == answer.ChoiceIndex)
+                {
+                    tagClass = "btn number-2 btn-success";
+                }
+                else
+                {
+                    tagClass = "btn number-2 btn-danger";
+                }
+            }
+
+            <a class="@tagClass" asp-action="GetQuestionById" asp-route-id="@(ticket.StartIndex + i)">@(i + 1)</a>
+        }
+
         <br/>
-        <br/>
-        
-    
+
         if (question.Media.Exist)
         {
-          
-           var imageLink = $"/autotest/{question.Media.Name}.png";
+            var imageLink = $"/autotest/{question.Media.Name}.png";
 
-            <img src=@imageLink class="center" />
-            
-            
+            <img src="@imageLink" />
         }
-        <br/>
-        <br/>
-        <br/>;
-        <h1>@question.Id. @question.Question</h1><br/>
-        bool isSuccess = false;
-        for(int i = 0; i < question.Choices.Count; i++)
+
+        <h3>@question.Id. @question.Question</h3> <br/>
+
+        for (int i = 0; i < question.Choices.Count; i++)
         {
-            var bg = "";
-            if(ViewBag.IsAnswer==false)
+            if (isAnswer == false)
             {
-               
-                <a asp-controller="Questions" asp-action="GetQuestionById" asp-route-Id="@question.Id" asp-route-choiceIndex="@i" >
-                       <h4>@(i + 1). @question.Choices[i].Text</h4> 
+                <a asp-controller="Questions" asp-action="GetQuestionById" asp-route-id="@question.Id" asp-route-choiceIndex="@i">
+                                    <h5>@(i + 1). @question.Choices[i].Text</h5>
                 </a>
             }
             else
             {
-                
+                var bg = "";
+
                 if (question.Choices[i].Answer)
                 {
-                    bg = "background-color:chartreuse";
+                    bg = "background-color: chartreuse";
                 }
 
-                if (i == ViewBag.ChoiceIndex)
+                if (i == choiceIndex)
                 {
-                    if (ViewBag.Answer == false)
+                    if (isCorrectAnswer == false)
                     {
-                        bg = "background-color:red";
+                        bg = "background-color: red";
                     }
-                   
                 }
-                <h4 style="@bg">@(i + 1). @question.Choices[i].Text</h4>  
 
-
-                
+                <h5 style="@bg">@(i + 1). @question.Choices[i].Text</h5>
             }
 
             <br/>
         }
 
-
-
         if (ViewBag.IsAnswer)
         {
-            <a asp-controller="Questions" asp-action="GetQuestionById" asp-route-id="@(question.Id+1)" class="btn btn-primary">Next</a>
-            ;
+            <a asp-controller="Questions" asp-action="GetQuestionById" asp-route-id="@(question.Id+1)"><h2>Next</h2></a>
         }
     }
     else
     {
-        <h1>Not Found</h1>
+        <h1>Not found</h1>
         <h3>Id: @ViewBag.QuestionId</h3>
     }
-
 }
-

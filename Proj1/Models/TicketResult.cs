@@ -1,13 +1,18 @@
-﻿namespace Proj1.Models
+﻿using AutoTestBot.Models;
+
+namespace Proj1.Models
 {
-    public class TicketResult
+    public class UserTickets :Ticket
     {
-        public int CorrectCount { get; set; }
-        public int QuestionCount { get; set; }
-        public int TicketIndex { get; set; }
-        public int QuestionId { get; set; }
-        public int AnswerChoiceIndex { get; set; }
+
+        public List<QuestionAnswer> Answers { get; set; } = new();
         public DateTime DateTime { get; set; }
 
+    }
+    public class QuestionAnswer
+    {
+        public int QuestionIndex { get; set;}
+        public int ChoiceIndex { get; set;}
+        public int CorrectIndex { get; set;}
     }
 }

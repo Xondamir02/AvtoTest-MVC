@@ -2,7 +2,7 @@
 
 namespace AutoTestBot.Models
 {
-    class QuestionModel
+    public class QuestionModel
     {
         public int Id { get; set; }
         public string Question { get; set; }

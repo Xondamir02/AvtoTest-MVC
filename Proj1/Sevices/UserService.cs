@@ -11,11 +11,11 @@ namespace Proj1.Sevices
             if (context.Request.Cookies.ContainsKey("UserId"))
             {
                 var userId = context.Request.Cookies["UserId"];
-                var user = UserService.Users.FirstOrDefault(u => u.Id == userId);
+                var user = Users.FirstOrDefault(u => u.Id == userId);
 
                 return user;
-
             }
+
             return null;
         }
 

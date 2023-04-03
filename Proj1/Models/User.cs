@@ -14,8 +14,7 @@ namespace Proj1.Models
         public bool IsSellected { get; set; }   
         public int StartQiuestionId { get; set; }
 
-        public List<TicketResult> TicketResults { get; set; }
-        public List<Answered> AnsweredQuestion { get; set; }
+        public List<UserTickets> UserTickets { get; set; }
     }
 
 }

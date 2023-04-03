@@ -1,6 +1,6 @@
 ﻿namespace AutoTestBot.Models
 {
-    class Ticket
+   public class Ticket
     {
         public int Index { get; set; }
         public int CorrectCount { get; set; }

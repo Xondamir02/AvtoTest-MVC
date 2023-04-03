@@ -10,70 +10,53 @@ namespace Proj1.Controllers
 
     public class QuestionsController : Controller
     {
-        private List<QuestionModel>? _questions;
-        
-        public QuestionsController()
+        public IActionResult Index()
         {
-
-            var path = Path.Combine("JsonData", "uzlotin.json");
-            var json = System.IO.File.ReadAllText(path);
-            _questions = JsonConvert.DeserializeObject<List<QuestionModel>>(json);
-
-        }
-
-        private IActionResult Index()
-        {
-            ViewBag.Questions = _questions;
+            ViewBag.Questions = QuestionService.Instance.Questions;
 
             return View();
         }
 
-        public IActionResult GetQuestionById(int id, int? choiceIndex = null, int? ticketIndex = null)
+        public IActionResult GetQuestionById(int id, int? ticketIndex = null, int? choiceIndex = null)
         {
             if (!UserService.IsLoggedIn(HttpContext))
                 return RedirectToAction("SignIn", "Users");
-          
 
+            Models.User user = UserService.GetCurrentUser(HttpContext);
 
             if (ticketIndex != null)
             {
                 HttpContext.Response.Cookies.Append("CurrentTicketIndex", ticketIndex.ToString());
-                
+                HttpContext.Response.Cookies.Delete("CorrectAnswersCount");
             }
-            if (HttpContext.Request.Cookies.ContainsKey("CurrentTicketIndex"))
+            else if (HttpContext.Request.Cookies.ContainsKey("CurrentTicketIndex"))
             {
-                var index = Convert.ToInt32(HttpContext.Request.Cookies["CurrentTicketIndex"]);
-                if (id > index * 10 + 10)
-
-                {
-                    var correctCount = Convert.ToInt32(HttpContext.Request.Cookies["CorrectAnswersCount"]);
-                    HttpContext.Response.Cookies.Delete("CorrectAnswersCount");
-                    HttpContext.Response.Cookies.Delete("CurrentTicketIndex");
-
-                    var user = UserService.GetCurrentUser(HttpContext);
-                    if (user is not null)
-                    {
-                        user.TicketResults.Add(new TicketResult()
-                        {
-                            CorrectCount = correctCount,
-                            QuestionCount = 10,
-                            TicketIndex = index,
-                          
-                          
-                            DateTime = DateTime.Now
-
-
-                        });
-
-
-                    }
-                    
-
-                    return RedirectToAction(nameof(TicketCards), new { ticketIndex = index, correctCount = correctCount });
-                }
+                ticketIndex = Convert.ToInt32(HttpContext.Request.Cookies["CurrentTicketIndex"]);
             }
 
-            var question = _questions?.FirstOrDefault(x => x.Id == id);
+            if (id > ticketIndex * 10 + 10)
+            {
+                var correctCount = Convert.ToInt32(HttpContext.Request.Cookies["CorrectAnswersCount"]);
+
+                HttpContext.Response.Cookies.Delete("CurrentTicketIndex");
+                HttpContext.Response.Cookies.Delete("CorrectAnswersCount");
+
+                if (user is not null)
+                {
+                    var userTicket = user.UserTickets.FirstOrDefault(t => t.Index == ticketIndex);
+                    userTicket.CorrectCount = correctCount;
+                }
+
+                return RedirectToAction(nameof(Result), "Questions",
+                    new
+                    {
+                        ticketIndex = ticketIndex,
+                        correctCount = correctCount
+                    });
+            }
+
+            var question = QuestionService.Instance.Questions?.FirstOrDefault(x => x.Id == id);
+
             if (question == null)
             {
                 ViewBag.QuestionId = id;
@@ -83,26 +66,31 @@ namespace Proj1.Controllers
             {
                 ViewBag.Question = question;
                 ViewBag.IsSuccess = true;
-
+                ViewBag.Ticket = user.UserTickets.FirstOrDefault(t => t.Index == ticketIndex);
                 ViewBag.IsAnswer = choiceIndex != null;
+
                 if (choiceIndex != null)
                 {
                     var answer = question.Choices[(int)choiceIndex].Answer;
-                    ViewBag.Answer = answer;
+                    ViewBag.IsCorrectAnswer = answer;
                     ViewBag.ChoiceIndex = choiceIndex;
+
+                    var userTicket = user.UserTickets.FirstOrDefault(t => t.Index == ticketIndex);
+                    
+                    userTicket.Answers.Add(new QuestionAnswer()
+                    {
+                        ChoiceIndex = choiceIndex.Value,
+                        QuestionIndex = id,
+                        CorrectIndex = question.Choices.IndexOf(question.Choices.First(c => c.Answer))
+                    });
+
                     if (answer)
                     {
-
-
-
-
-
                         if (HttpContext.Request.Cookies.ContainsKey("CorrectAnswersCount"))
                         {
                             var index = Convert.ToInt32(HttpContext.Request.Cookies["CorrectAnswersCount"]);
 
                             HttpContext.Response.Cookies.Append("CorrectAnswersCount", $"{index + 1}");
-
                         }
                         else
                         {
@@ -110,29 +98,18 @@ namespace Proj1.Controllers
                         }
                     }
                 }
-
-
-
             }
-            return View();
+
+            return View(user);
         }
+
         public IActionResult Result(int ticketIndex, int correctCount)
         {
             ViewBag.TicketIndex = ticketIndex;
             ViewBag.CorrectCount = correctCount;
+
             return View();
         }
-        public IActionResult TicketCards(int ticketIndex, int correctCount)
-        {
-
-            ViewBag.TicketIndex = ticketIndex;
-            ViewBag.CorrectCount = correctCount;
-            return View();
-        }
-
-
-
-
-
     }
 }
+

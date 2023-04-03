@@ -1,23 +1,19 @@
-﻿<h1>Tickets</h1>
+﻿@model User
+
+<h1>Tickets</h1>
 
 
 
-@for (int i = 0; i < ViewBag.TicketsCount; i++){
-
-
- 
-            
-
-                    <a asp-area="" asp-controller="Questions" asp-action="GetQuestionById"  asp-route-id ="@(i*10+1)" asp-route-ticketIndex="@(i)" class=" number btn btn-primary">@(i+1)</a>
-    if ((i + 1) % 10 == 0)
+@{
+    for (int i = 0; i < Model.UserTickets.Count; i++)
     {
-                    <br />
-                    <br />
+        <a asp-controller="Questions" asp-action="GetQuestionById" asp-route-id="@Model.UserTickets[i].StartIndex" asp-route-ticketIndex="@i" class=" number btn btn-primary">Ticket @(i + 1)</a>
+        if ((i + 1) % 10 == 0)
+        {
+            <br />
+            <br />
+        }
     }
-                
-
-   
-
 }
 
 <h1>Ticket Cards here: </h1>
