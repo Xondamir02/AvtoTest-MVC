@@ -1,11 +1,29 @@
 ﻿@model User
+
+<div class="center"></div>
 <h1>Profile</h1>
-<img style="width:300px ; height=300px" src="@Model.PhotoPath"/>
+<div class="nima">
+<img class="rounded-circle"  width="250" height="250"  src="@Model.PhotoPath"/>
+</div>
+<div class="text-center">
 <h3>Name: @Model.Name</h3>
 <h3>UserName: @Model.Username</h3>
 <h3>Password: @Model.Password</h3>
+</br>
+</div>
+
 
 <a class="btn btn-outline-danger" asp-action="LogOut"> Log Out</a>
+</br></br></br>
+<a class="btn btn-outline-danger" asp-action="ChangeName">Change Name</a>
+<a class="btn btn-outline-danger" asp-action="ChangePhoto">Change Photo</a>
+</br></br></br>
+<a class="btn btn-outline-danger" asp-action="ChangeUserName">Change Username</a>
+
+<a class="btn btn-outline-danger" asp-action="ChangePassword">Change Password</a>
+</br>
+</br>
+
 <h1>Ticket Results</h1>
 <table class="table">
     <thead>

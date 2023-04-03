@@ -6,9 +6,12 @@ using Proj1.Sevices;
 
 namespace Proj1.Controllers
 {
+
+
     public class QuestionsController : Controller
     {
         private List<QuestionModel>? _questions;
+        
         public QuestionsController()
         {
 
@@ -27,9 +30,15 @@ namespace Proj1.Controllers
 
         public IActionResult GetQuestionById(int id, int? choiceIndex = null, int? ticketIndex = null)
         {
+            if (!UserService.IsLoggedIn(HttpContext))
+                return RedirectToAction("SignIn", "Users");
+          
+
+
             if (ticketIndex != null)
             {
                 HttpContext.Response.Cookies.Append("CurrentTicketIndex", ticketIndex.ToString());
+                
             }
             if (HttpContext.Request.Cookies.ContainsKey("CurrentTicketIndex"))
             {
@@ -48,13 +57,20 @@ namespace Proj1.Controllers
                         {
                             CorrectCount = correctCount,
                             QuestionCount = 10,
-                            TicketIndex = index
+                            TicketIndex = index,
+                          
+                          
+                            DateTime = DateTime.Now
+
+
                         });
+
+
                     }
+                    
 
-                    return RedirectToAction(nameof(Result),new {ticketIndex=index,correctCount=correctCount});
+                    return RedirectToAction(nameof(TicketCards), new { ticketIndex = index, correctCount = correctCount });
                 }
-
             }
 
             var question = _questions?.FirstOrDefault(x => x.Id == id);
@@ -78,6 +94,9 @@ namespace Proj1.Controllers
                     {
 
 
+
+
+
                         if (HttpContext.Request.Cookies.ContainsKey("CorrectAnswersCount"))
                         {
                             var index = Convert.ToInt32(HttpContext.Request.Cookies["CorrectAnswersCount"]);
@@ -97,12 +116,23 @@ namespace Proj1.Controllers
             }
             return View();
         }
-        public IActionResult Result(int ticketIndex,int correctCount)
+        public IActionResult Result(int ticketIndex, int correctCount)
         {
             ViewBag.TicketIndex = ticketIndex;
             ViewBag.CorrectCount = correctCount;
             return View();
         }
+        public IActionResult TicketCards(int ticketIndex, int correctCount)
+        {
+
+            ViewBag.TicketIndex = ticketIndex;
+            ViewBag.CorrectCount = correctCount;
+            return View();
+        }
+
+
+
+
 
     }
 }

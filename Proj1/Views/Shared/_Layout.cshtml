@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Proj1.Sevices;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,15 +26,26 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li><li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Questions" asp-action="GetQuestionById" asp-route-id="1">Questions</a>
-                        </li>
+                            
                          </li></li><li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Index" asp-route-id="1"  >Tickets</a>
-                        </li></li></li><li class="nav-item">
-                            <a class="btn btn-outline-primary text-dark pos-right" asp-area="" asp-controller="Users" asp-action="SignUp"   >Sign Up</a>
-                        </li></li></li></li><li class="nav-item">
-                            <a class="btn btn-outline-primary text-dark pos-right-2" asp-area="" asp-controller="Users" asp-action="SignIn"   >Sign In</a>
-                        </li>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="CheckUser">Tickets</a>
+                            @if (!UserService.IsLoggedIn(Context))
+                            {
+                                <li class="nav-item">
+                                    <a class="btn btn-outline-primary text-info pos-right" asp-area="" asp-controller="Users" asp-action="SignUp" asp-route-id="1">Sign Up</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="btn btn-outline-primary text-dark pos-right-2" asp-area="" asp-controller="Users" asp-action="SignIn" asp-route-id="1">Sign In</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="btn btn-outline-primary text-dark pos-right" asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="1">Profile</a>
+                                </li>
+                            }
+                           
+                                  
                     </ul>
                 </div>
             </div>

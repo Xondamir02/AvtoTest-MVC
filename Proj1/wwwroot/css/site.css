@@ -23,3 +23,63 @@ body {
     position:absolute;
     right:100px;
 }
+ .pos-left{
+     position:absolute;
+     left:10px;
+ }
+
+.nima{
+    width:100%;
+    display:flex;
+    justify-content: center;
+}
+
+.homepage {
+    background-image: url("../Image/A1.jpg");
+    background-position:right;
+    background-size:cover;
+    height: 70vh;
+    width:80vh;
+    font-family: sans-serif
+}
+
+.homepage-h1 {
+    position:absolute;
+    right:50px;
+    padding-top: 150px;
+    margin-bottom: 20px;
+}
+
+
+.all1 {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.number {
+    width: 80px;
+    justify-content:center;
+    align-items: center;
+    transition: 0.5s;
+    background-color: blue;
+    border-radius: 11px;
+    color: white;
+}
+
+.number:hover {
+        background-color: gold;
+        color: black;
+        transform: translateY(-5px);
+}
+.buttonCenter {
+    display: block;
+    margin-left: 25%;
+    margin-right: auto;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}

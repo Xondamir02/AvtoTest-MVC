@@ -1,8 +1,111 @@
-﻿@{
+﻿@using Proj1.Sevices;
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
+
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <div class="homepage-h1">
+
+        <h1>Assalomu Alaykum</h1>
+        </br>
+        <h1>Avto Test</h1>
+        </br>
+        <h3> web-sahifamizga Xush kelibsiz!</h3>
+
+    </div>
+
+    <div class="homepage">
+
+        <h1 class="display-4"></h1>
+
+    </div>
+
+    @if (UserService.IsLoggedIn(Context))
+    {
+        <h1>Sellect Your La nguage</h1>
+        <a class="btn btn-primary" asp-controller="Tickets" asp-action="Oddiy" asp-route-til="uzkiril.json">Uzbek(kiril)</a>
+                <a class="btn btn-primary" asp-controller="Tickets" asp-action="Oddiy" asp-route-til="uzlotin.json">Uzbek(lotin)</a>
+                <a class="btn btn-primary" asp-controller="Tickets" asp-action="Oddiy" asp-route-til="rus.json">Rus</a>
+
+
+
+    }
+
+
+
+
+        
+           /* <label for="language-picker-select">Select your language</label>
+            @using (Html.BeginForm("Oddiy", "Tickets"))
+            {
+                <select name="Segmentation">
+                    <option  value="uzkiril.json">Uzbek(kiril)</option>
+                    <option  value="uzlotin.json" selected>Uzbek(lotin)</option>
+                    <option  value="rus.json">Rus</option>
+
+
+                </select>
+           
+            }
+        
+    */
+
+  @*/*<form asp-controller="Tickets" asp-action="Index">
+    <label for="language-picker-select">Select your language</label>
+
+    <select name="language-picker-select" id="language-picker-select">
+      <option  value="uzlotin.json" selected>Uzbek(lotin)</option>
+      <option  value="uzkiril.json">Uzbek(kiril)</option>
+      <option  value="rus.json">Rus</option>
+    </select>
+
+  </form>
+</div>*/*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+    
+@if (UserService.IsLoggedIn(Context))
+{
+ @model Language
+<form asp-controller="Home" asp-action="Language">
+  <label for="LanguageJsonName">Choose a language:</label>
+  <select name="LanguageJsonName">
+  <option value="uzlotin.json">Uzbek(lotin)</option>
+  <option value="uz.kiril.json">Uzbek(kiril)</option>
+  <option value="rus.json">Rus</option>
+  <br><br>
+  <input type="submit" value="Submit">
+</form>
+}
+else{
+<h1> </h1>
+}*@

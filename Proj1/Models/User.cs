@@ -1,4 +1,6 @@
-﻿namespace Proj1.Models
+﻿using AutoTestBot.Models;
+
+namespace Proj1.Models
 {
     public class User
     {
@@ -8,8 +10,12 @@
         public string Email { get; set; }
         public string Name { get; set; }
         public string? PhotoPath { get; set; }
+        public string LanguageJsonName { get; set; }
+        public bool IsSellected { get; set; }   
+        public int StartQiuestionId { get; set; }
 
-        public List<TicketResult> TicketResults { get;set; }
+        public List<TicketResult> TicketResults { get; set; }
+        public List<Answered> AnsweredQuestion { get; set; }
     }
 
 }

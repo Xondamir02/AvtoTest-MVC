@@ -1,4 +1,6 @@
-﻿namespace AutoTestBot.Models
+﻿using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments;
+
+namespace AutoTestBot.Models
 {
     class QuestionModel
     {
@@ -7,5 +9,6 @@
         public string Description { get; set; }
         public QuestionMedia Media { get; set; }
         public List<QuestionChoices> Choices { get; set; }
+        public int CurrentTicketIndex { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Proj1.Models;
+using Proj1.Sevices;
 using System.Diagnostics;
+
 
 namespace Proj1.Controllers
 {
@@ -18,10 +20,24 @@ namespace Proj1.Controllers
             return View();
         }
 
+
         public IActionResult Privacy()
         {
             return View();
         }
+        //public IActionResult Language(Language language)
+        //{
+
+
+        //    language.Id = HttpContext.Request.Cookies["UserId"];
+
+        //    var user = UserService.Users.FirstOrDefault(u => u.Id == language.Id);
+        //    user.LanguageJsonName = language.LanguageJsonName;
+
+        //    return RedirectToAction("Index", "Home");
+
+
+        //}           
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

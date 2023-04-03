@@ -7,7 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Users\CheckUser.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Users\CheckUser.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Users\CheckUser.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Tickets\CheckUser.cshtml" />
   </ItemGroup>
 
 </Project>

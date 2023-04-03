@@ -9,4 +9,4 @@
         public IFormFile Photo { get; set; }
     }
 }
- 
+

@@ -1,0 +1,12 @@
+﻿@model ChangeUserModel
+
+<h1>Change Name</h1>
+<form class="row g-3" style="width: 400px" asp-controller="Users" asp-action="ChangeName" method="post">
+    <div >
+        <input name="Name" class="form-control" asp-for="Name" type="text" placeholder="Name"/>
+        <span class="text-danger" asp-validation-for="Name"></span>
+    </div>
+
+    <button class="form-control"  type="submit" >Change</button>
+    
+</form>
