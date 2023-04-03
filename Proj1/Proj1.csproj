@@ -26,4 +26,8 @@
     <None Include="Views\Tickets\CheckUser.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\UserImages\" />
+  </ItemGroup>
+
 </Project>
