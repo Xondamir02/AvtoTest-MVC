@@ -1,8 +1,6 @@
-﻿using AutoTestBot.Models;
-using Microsoft.AspNetCore.Mvc;
-
-using Proj1.Sevices;
+﻿using Microsoft.AspNetCore.Mvc;
 using Proj1.Models;
+using Proj1.Sevices;
 
 namespace Proj1.Controllers
 {
@@ -84,7 +82,7 @@ namespace Proj1.Controllers
         }
         public IActionResult CheckUser()
         {
-            
+
             if (UserService.IsLoggedIn(HttpContext))
             {
                 var user = UserService.GetCurrentUser(HttpContext);

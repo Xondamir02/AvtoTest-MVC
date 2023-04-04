@@ -11,7 +11,7 @@ namespace Proj1.Models
         public string Name { get; set; }
         public string? PhotoPath { get; set; }
         public string LanguageJsonName { get; set; }
-        public bool IsSellected { get; set; }   
+        public bool IsSellected { get; set; }
         public int StartQiuestionId { get; set; }
 
         public int? CurrentTicketIndex { get; set; }

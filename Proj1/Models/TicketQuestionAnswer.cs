@@ -1,6 +1,4 @@
-﻿using AutoTestBot.Models;
-
-namespace Proj1.Models
+﻿namespace Proj1.Models
 {
     public class TicketQuestionAnswer
     {

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.FileSystemGlobbing.Internal.PathSegments;
-
-namespace AutoTestBot.Models
+﻿namespace AutoTestBot.Models
 {
     public class QuestionModel
     {

@@ -15,7 +15,7 @@ namespace Proj1.Controllers
         [HttpPost]
         public IActionResult SignUp(CreateUserModel createUser)
         {
-          if (string.IsNullOrEmpty(createUser.Username))
+            if (string.IsNullOrEmpty(createUser.Username))
             {
                 ViewBag.NameError = "Name is null or empty";
                 return View();

@@ -54,7 +54,7 @@
         <h2 class="card-title">Ticket @(ticket.Index + 1)</h2>
 
             @if (ticket.Answers.Count > 0)
-            {
+            { 
                 <h5 class="card-text">@ticket.CorrectCount / @ticket.QuestionsCount</h5>
                 <h5 class="card-text">@ticket.Date.ToString("f")</h5>
             }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Proj1.Models;
-using Proj1.Sevices;
 using System.Diagnostics;
 
 
