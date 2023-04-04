@@ -23,35 +23,72 @@
 
     </div>
 
-    @if (UserService.IsLoggedIn(Context))
-    {
-        <h1>Sellect Your La nguage</h1>
-        <a class="btn btn-primary" asp-controller="Tickets" asp-action="Oddiy" asp-route-til="uzkiril.json">Uzbek(kiril)</a>
-                <a class="btn btn-primary" asp-controller="Tickets" asp-action="Oddiy" asp-route-til="uzlotin.json">Uzbek(lotin)</a>
-                <a class="btn btn-primary" asp-controller="Tickets" asp-action="Oddiy" asp-route-til="rus.json">Rus</a>
+  
 
 
+<a class="btn btn-primary" asp-controller="Users" asp-action="ChangeLanguage" asp-route-language="uz">O'zbek</a>
+<a class="btn btn-light" asp-controller="Users" asp-action="ChangeLanguage" asp-route-language="uzc">Kiril</a>
+<a class="btn btn-info" asp-controller="Users" asp-action="ChangeLanguage" asp-route-language="ru">Ruscha</a>
 
+
+    @{
+        var users = UserService.Users;
+        <h1>Users </h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Username</th>
+                <th scope="col">Name</th>
+                <th scope="col">CorrectCount</th>
+            </tr>
+            </thead>
+            <tbody>
+
+                @for (int i = 0; i < users.Count; i++)
+                {
+                    var user = users[i];
+
+                    <tr>
+                        <th scope="row">@(i + 1)</th>
+                        <td>@user.Username</td>
+                        <td>@user.Name</td>
+                        <td>@user.Tickets.Sum(t=>t.CorrectCount)</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
     }
 
 
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
         
-           /* <label for="language-picker-select">Select your language</label>
-            @using (Html.BeginForm("Oddiy", "Tickets"))
-            {
-                <select name="Segmentation">
-                    <option  value="uzkiril.json">Uzbek(kiril)</option>
-                    <option  value="uzlotin.json" selected>Uzbek(lotin)</option>
-                    <option  value="rus.json">Rus</option>
-
-
-                </select>
            
-            }
         
-    */
+  
 
   @*/*<form asp-controller="Tickets" asp-action="Index">
     <label for="language-picker-select">Select your language</label>

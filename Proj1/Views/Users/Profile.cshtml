@@ -1,9 +1,10 @@
-﻿@model User
+﻿@using Proj1.Sevices;
+@model User
 
-<div class="center"></div>
 <h1>Profile</h1>
+<div class="center"></div>
 <div class="nima">
-<img class="rounded-circle"  width="250" height="250"  src="@Model.PhotoPath"/>
+<img class="rounded-circle shadow-lg"     width="250" height="250"  src="@Model.PhotoPath"/>
 </div>
 <div class="text-center">
 <h3>Name: @Model.Name</h3>
@@ -24,7 +25,46 @@
 </br>
 </br>
 
+
+
+
+
+<h1>TotalCorrect: @Model.Tickets.Sum(t=>t.CorrectCount) / @QuestionService.Instance.Questions.Count</h1>
+<h1>TotalFinishedTickets: @Model.Tickets.Count(t=>t.IsCompleted) / @QuestionService.Instance.TicketsCount</h1>
+
+@{
+    var lastweek = Model.Tickets
+        .Where(t => t.Date > DateTime.Now.AddMinutes(-2))
+        .Sum(t => t.CorrectCount);
+}
+
+<h1>Last week : @lastweek</h1>
+
+@{
+    var ticket = Model.Tickets.MaxBy(t => t.Date);
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Ticket @(ticket.Index + 1)</h4>
+            
+        @if (ticket.Answers.Count > 0)
+        {
+            <p class="card-text">@ticket.CorrectCount / @ticket.QuestionsCount</p>
+            <p class="card-text">@ticket.Date.ToString("f")</p>
+        }
+
+        <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Index">Start</a>
+    </div>
+</div>
+
+
+<br/>
+
+<br/>
+
 <h1>Ticket Results</h1>
+
 <table class="table">
     <thead>
     <tr>
@@ -35,18 +75,18 @@
     </tr>
     </thead>
     <tbody>
+    
+    @for (int i=0; i < Model.Tickets.Count; i++)
+    {
+        var ticketResult = Model.Tickets[i];
 
-        @for (int i = 0; i < Model.UserTickets.Count; i++)
-        {
-            var ticketResult = Model.UserTickets[i];
-
-            <tr>
-                <th scope="row">@(i + 1)</th>
-                <td>@ticketResult.Index</td>
-                <td>@ticketResult.CorrectCount</td>
-                <td>@ticketResult.QuestionsCount</td>
-            </tr>
-        }
+        <tr>
+            <th scope="row">@(i+1)</th>
+            <td>@ticketResult.Index</td>
+            <td>@ticketResult.CorrectCount</td>
+            <td>@ticketResult.QuestionsCount</td>
+        </tr>
+    }
 
     </tbody>
 </table>

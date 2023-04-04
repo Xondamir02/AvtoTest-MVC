@@ -14,7 +14,9 @@ namespace Proj1.Models
         public bool IsSellected { get; set; }   
         public int StartQiuestionId { get; set; }
 
-        public List<UserTickets> UserTickets { get; set; }
+        public int? CurrentTicketIndex { get; set; }
+        public Ticket? CurrentTicket => Tickets.FirstOrDefault(t => t.Index == CurrentTicketIndex);
+        public List<Ticket> Tickets { get; set; } = null!;
     }
 
 }

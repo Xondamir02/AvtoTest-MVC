@@ -4,19 +4,23 @@
 
 
 
-@{
-    for (int i = 0; i < Model.UserTickets.Count; i++)
+<div class="row col-lg-12 col-md-12 col-sm-12 gap-3 d-flex justify-content-center">
+    @foreach (var ticket in Model.Tickets)
     {
-        <a asp-controller="Questions" asp-action="GetQuestionById" asp-route-id="@Model.UserTickets[i].StartIndex" asp-route-ticketIndex="@i" class=" number btn btn-primary">Ticket @(i + 1)</a>
-        if ((i + 1) % 10 == 0)
-        {
-            <br />
-            <br />
-        }
-    }
-}
+        
 
-<h1>Ticket Cards here: </h1>
-<a asp-controller="Questions" asp-action="TicketCards" class="btn btn-outline-primary">Ticket Cards</a>
+            <div class="card" style="width: 11%;">
+              <img src="/Image/A1.jpg" class="card-img-top" alt="RASM">
+          <div class="card-body">
+                 <h5 class="card-title">Ticket @(ticket.Index + 1)</h5>
+                <div class="card-text">
+
+                                  <p class="card-text">@ticket.CorrectCount / @ticket.QuestionsCount</p>
+                            <p class="card-text">@ticket.Date.ToString()</p>
+                    </div>
+                    <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Index">Start</a>
+          </div>
+        </div>
+    }
 
 

@@ -1,0 +1,82 @@
+﻿@using AutoTestBot.Models;
+@model User
+
+@{
+    QuestionModel question = ViewBag.Question;
+    Ticket ticket = Model.CurrentTicket!;
+
+    bool isAnswer = ViewBag.IsAnswer;
+    TicketQuestionAnswer? questionAnswer = null;
+
+    if (isAnswer)
+    {
+        questionAnswer = ViewBag.Answer;
+    }
+
+
+    for (var i = 0; i < ticket.QuestionsCount; i++)
+    {
+        var questionIndex = ticket.StartIndex + i;
+        var answer = ticket.Answers.FirstOrDefault(q => q.QuestionIndex == questionIndex);
+        var tagClass = "btn number btn-primary ";
+
+        if (answer != null)
+        {
+            if (questionIndex == question.Id)
+            {
+                isAnswer = true;
+                questionAnswer = answer;
+            }
+
+            tagClass = answer.IsCorrect ? "btn number-2 btn-success" : "btn number-2 btn-danger";
+        }
+
+        <a class="@tagClass" asp-action="Questions" asp-route-id="@(ticket.StartIndex + i)">@(i + 1)</a>
+    }
+
+    <br />
+    <br />
+
+    if (question.Media.Exist)
+    {
+        var imageLink = $"/autotest/{question.Media.Name}.png";
+
+        <img alt="Question image" src="@imageLink" />
+    }
+
+    <h3>@question.Id. @question.Question</h3>
+
+    <br />
+
+    for (int i = 0; i < question.Choices.Count; i++)
+    {
+        if (isAnswer)
+        {
+            var bg = "";
+
+            if (i == questionAnswer.ChoiceIndex && !questionAnswer.IsCorrect)
+            {
+                bg = "background-color: red";
+            }
+            else if (question.Choices[i].Answer)
+            {
+                bg = "background-color: chartreuse";
+            }
+
+            <h5 style="@bg">@(i + 1). @question.Choices[i].Text</h5>
+        }
+        else
+        {
+            <a asp-controller="Tickets" asp-action="Questions" asp-route-id="@question.Id" asp-route-choiceIndex="@i">
+                            <h5>@(i + 1). @question.Choices[i].Text</h5>
+            </a>
+        }
+
+        <br />
+    }
+
+    if (Model.CurrentTicket!.QuestionsCount == Model.CurrentTicket.Answers.Count)
+    {
+        <a asp-controller="Tickets" asp-action="Result"><h2>Result</h2></a>
+    }
+}
