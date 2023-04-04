@@ -25,37 +25,69 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li><li class="nav-item">
-                            
-                         </li></li><li class="nav-item">
+                        </li>
+                        
+                        
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="CheckUser">Tickets</a>
-                            @if (!UserService.IsLoggedIn(Context))
-                            {
-                                <li class="nav-item">
-                                    <a class="btn btn-outline-primary text-info pos-right" asp-area="" asp-controller="Users" asp-action="SignUp" asp-route-id="1">Sign Up</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="btn btn-outline-primary text-dark pos-right-2" asp-area="" asp-controller="Users" asp-action="SignIn" asp-route-id="1">Sign In</a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="nav-item">
-                                    <a class="btn btn-outline-primary text-dark pos-right" asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="1">Profile</a>
-                                </li>
-                            }
+
+
+                            
                            
                                   
+                    </ul>
+                    <ul class="navbar-text" style="list-style: none;
+    display: flex;
+    gap: 5px;">
+                        <li class="nav-item">
+
+                            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+
+                                  <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                     Language
+                                   </button>
+                                   <ul class="dropdown-menu">
+                                     <li><a class="dropdown-item" asp-controller="Users" asp-action="ChangeLanguage" asp-route-language="uz"  >O'zbek</a></li>
+
+                                     <li><a class="dropdown-item" asp-controller="Users" asp-action="ChangeLanguage" asp-route-language="uzc" >Kiril</a></li>
+                                     <li><a class="dropdown-item" asp-controller="Users" asp-action="ChangeLanguage" asp-route-language="ru"  >Ruscha</a></li>
+                                    </ul>
+                                   </div>
+                                  </div>
+
+
+                        </li>
+                        @if (!UserService.IsLoggedIn(Context))
+                        {
+                                    <li class="nav-item">
+                                        <a class="btn btn-primary" asp-area="" asp-controller="Users" asp-action="SignUp" asp-route-id="1">Sign Up</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="btn btn-primary" asp-area="" asp-controller="Users" asp-action="SignIn" asp-route-id="1">Sign In</a>
+                                    </li>
+                        }
+                        else
+                        {
+                                    <li class="nav-item">
+                                        <a class="btn btn-primary" asp-area="" asp-controller="Users" asp-action="Profile" asp-route-id="1">Profile</a>
+                                    </li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+
+
+
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
+
 
     <footer class="border-top footer text-muted">
         <div class="container">

@@ -43,25 +43,36 @@
 @{
     var ticket = Model.Tickets.MaxBy(t => t.Date);
 }
+<div class="d-flex justify-content-center" style="flex-wrap:wrap;">
 
-<div class="card">
-    <div class="card-body">
-        <h4 class="card-title">Ticket @(ticket.Index + 1)</h4>
-            
-        @if (ticket.Answers.Count > 0)
-        {
-            <p class="card-text">@ticket.CorrectCount / @ticket.QuestionsCount</p>
-            <p class="card-text">@ticket.Date.ToString("f")</p>
-        }
+    <div class=" row g-2 col-md-2" style="border-radius: 25px;
+    margin-top: 1rem;
+    padding: 2rem;
+    box-shadow: 0 0rem 3rem rgba(8,7,16,0.6)!important;">
+    <div class="card-body" style="width: 13%">
+         <img src="/Image/A1.jpg" class="card-img-top" alt="RASM">
+        <h2 class="card-title">Ticket @(ticket.Index + 1)</h2>
 
-        <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Index">Start</a>
+            @if (ticket.Answers.Count > 0)
+            {
+                <h5 class="card-text">@ticket.CorrectCount / @ticket.QuestionsCount</h5>
+                <h5 class="card-text">@ticket.Date.ToString("f")</h5>
+            }
+
+        <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Index" class="btn btn-primary">Start</a>
     </div>
+</div>
+
+
+
 </div>
 
 
 <br/>
 
 <br/>
+
+
 
 <h1>Ticket Results</h1>
 

@@ -19,9 +19,14 @@ body {
 .pos-right{
     position:absolute;
     right:10px;
-}.pos-right-2{
+}
+.pos-right-2{
     position:absolute;
     right:100px;
+}
+.pos-right-3{
+    position:absolute;
+    right:190px;
 }
  .pos-left{
      position:absolute;

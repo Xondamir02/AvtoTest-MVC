@@ -15,10 +15,27 @@
                  <h5 class="card-title">Ticket @(ticket.Index + 1)</h5>
                 <div class="card-text">
 
-                                  <p class="card-text">@ticket.CorrectCount / @ticket.QuestionsCount</p>
-                            <p class="card-text">@ticket.Date.ToString()</p>
+                    @{
+                        string time=default;
+                        string color = "text-success";
+                    }
+
+                    @if (ticket.Date.ToString() == "01/01/0001 00:00:00")
+                    {
+                         time = "Not Solved";
+                        color = "text-danger";
+                    }
+                    else
+                    {
+                        time = ticket.Date.ToString("f");
+                    }
+                    <p class="card-text">@ticket.CorrectCount / @ticket.QuestionsCount</p>
+                                <p class="card-text @color "> @time</p>
+                                <br/>
+
+
                     </div>
-                    <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Index">Start</a>
+                    <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Index" class="btn btn-primary "> Start</a>
           </div>
         </div>
     }
