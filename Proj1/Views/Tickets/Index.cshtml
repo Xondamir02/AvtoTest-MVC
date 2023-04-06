@@ -20,7 +20,7 @@
                         string color = "text-success";
                     }
 
-                    @if (ticket.Date.ToString() == "01/01/0001 00:00:00")
+                    @if (ticket.Date==default || ticket.Date==null)
                     {
                          time = "Not Solved";
                         color = "text-danger";
