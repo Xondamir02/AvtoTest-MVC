@@ -10,11 +10,11 @@
     <div>
         <h1 class="col-12" style="text-align:center">Sign Up</h1>
         <input name="Photo" class="form-control" asp-for="Photo" type="file" />
-        <span asp-validation-for="Photo"></span>
+        <span class="text-danger"  asp-validation-for="Photo"></span>
     </div>
     <div>
         <input name="Name" class="form-control" asp-for="Name" type="text" placeholder="Name"/>
-        <span asp-validation-for="Name"></span>
+        <span class="text-danger" asp-validation-for="Name"></span>
     </div>
     <div>
         <input  name="Username" class="form-control" asp-for="Username" type="text" placeholder="Username"/>
@@ -22,7 +22,7 @@
     </div>
     <div>
         <input  name="Password" class="form-control" asp-for="Password" type="text" placeholder="Password"/>
-        <span asp-validation-for="Password"></span>
+        <span class="text-danger"  asp-validation-for="Password"></span>
     </div>
     <button class="form-control btn-primary"  type="submit" >Register</button>
     <a class="link-info" asp-controller="Users" asp-action="SignIn">Sign In</a>
