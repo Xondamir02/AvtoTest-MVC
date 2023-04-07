@@ -1,0 +1,11 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "database": "C:\\GitHubRepo\\net-bootcamp-004\\Docs\\sqlite.db",
+      "group": "Sqlite",
+      "name": "SqLite"
+    }
+  ]
+}
