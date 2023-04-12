@@ -2,161 +2,156 @@
 using Proj1.Models;
 using Proj1.Sevices;
 
-namespace Proj1.Controllers
+namespace Proj1.Controllers;
+
+public class UsersController : Controller
 {
-    public class UsersController : Controller
+    [HttpGet]
+    public IActionResult SignUp()
     {
-        [HttpGet]
-        public IActionResult SignUp()
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult SignUp(CreateUserModel createUser)
+    {
+        if (createUser.Photo == null || createUser.Photo == default)
         {
+            ViewBag.NameError = "Name is null or empty";
             return View();
         }
 
-        [HttpPost]
-        public IActionResult SignUp(CreateUserModel createUser)
+        if (string.IsNullOrEmpty(createUser.Username))
         {
-            if (createUser.Photo==null || createUser.Photo==default)
-            {
-                ViewBag.NameError = "Name is null or empty";
-                return View();
-            }
-
-            if (string.IsNullOrEmpty(createUser.Username))
-            {
-                ViewBag.NameError = "Name is null or empty";
-                return View();
-            }
-            if (string.IsNullOrEmpty(createUser.Password))
-            {
-                ViewBag.NameError = "Password is null or empty";
-                return View();
-            }
-
-            UserService.Register(createUser, HttpContext);
-
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpGet]
-        public IActionResult SignIn()
-        {
+            ViewBag.NameError = "Name is null or empty";
             return View();
         }
-
-        [HttpPost]
-        public IActionResult SignIn(SignInUserModel signInUserModel)
+        if (string.IsNullOrEmpty(createUser.Password))
         {
-            var user = UserService.Users.FirstOrDefault(u => u.Username == signInUserModel.Username
-             && u.Password == signInUserModel.Password);
-
-            if (user == null)
-                return RedirectToAction("SignIn");
-
-            HttpContext.Response.Cookies.Append("user_Id", user.Id);
-
-            return RedirectToAction("Profile");
+            ViewBag.NameError = "Password is null or empty";
+            return View();
         }
+        
+        UserService.Register(createUser, HttpContext);
 
-        public IActionResult Profile()
-        {
-            var user = UserService.GetCurrentUser(HttpContext);
+        return RedirectToAction("Index", "Home");
+    }
 
-            if (user == null)
-            {
-                return RedirectToAction("SignUp");
-            }
+    [HttpGet]
+    public IActionResult SignIn()
+    {
+        return View();
+    }
 
-            return View(user);
-        }
+    [HttpPost]
+    public IActionResult SignIn(SignInUserModel signInUserModel)
+    {
+        var user = UserService._userRepository.GetUserByUsername(signInUserModel.Username!);
 
-        public IActionResult LogOut()
-        {
-            UserService.LogOut(HttpContext);
-
+        if (user == null || user.Password != signInUserModel.Password)
             return RedirectToAction("SignIn");
-        }
 
-        public IActionResult ChangeLanguage(string language)
+        HttpContext.Response.Cookies.Append("user_Id", user.Id);
+
+        return RedirectToAction("Profile");
+    }
+
+    public IActionResult Profile()
+    {
+        var user = UserService.GetCurrentUser(HttpContext);
+
+        if (user == null)
         {
-            QuestionService.Instance.LoadJson(language);
-
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("SignUp");
         }
 
-        [HttpGet]
-        public IActionResult ChangeName()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult ChangeName(ChangeUserModel changeUserModel)
-        {
-            changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
+        return View(user);
+    }
 
-            var user = UserService.Users.FirstOrDefault(u => u.Id == changeUserModel.Id);
+    public IActionResult LogOut()
+    {
+        UserService.LogOut(HttpContext);
 
-            user.Name = changeUserModel.Name;
+        return RedirectToAction("SignIn");
+    }
 
-            HttpContext.Response.Cookies.Append("user_Id", user.Id);
+    public IActionResult ChangeLanguage(string language)
+    {
+        QuestionService.Instance.LoadJson(language);
 
-            return RedirectToAction("Profile");
+        return RedirectToAction("Index", "Home");
+    }
 
-        }
+    [HttpGet]
+    public IActionResult ChangeName()
+    {
+        return View();
+    }
+    [HttpPost]
+    public IActionResult ChangeName(ChangeUserModel changeUserModel)
+    {
+        changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
+        var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
+        //var user = UserService.Users.FirstOrDefault(u => u.Id == changeUserModel.Id);
+        //var user=UserService._userRepository.GetUSerById(user.Id);
+        user.Name = changeUserModel.Name;
 
-        [HttpGet]
-        public IActionResult ChangeUserName()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult ChangeUserName(ChangeUserModel changeUserModel)
-        {
-            changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
+        HttpContext.Response.Cookies.Append("user_Id", user.Id);
 
-            var user = UserService.Users.FirstOrDefault(u => u.Id == changeUserModel.Id);
+        return RedirectToAction("Profile");
 
-            user.Username = changeUserModel.Username;
+    }
 
-            HttpContext.Response.Cookies.Append("user_Id", user.Id);
+    [HttpGet]
+    public IActionResult ChangeUserName()
+    {
+        return View();
+    }
+    [HttpPost]
+    public IActionResult ChangeUserName(ChangeUserModel changeUserModel)
+    {
+        changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
+        var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
 
-            return RedirectToAction("Profile");
-        }
-        [HttpGet]
-        public IActionResult ChangePassword()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult ChangePassword(ChangeUserModel changeUserModel)
-        {
-            changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
+        user.Username = changeUserModel.Username;
 
-            var user = UserService.Users.FirstOrDefault(u => u.Id == changeUserModel.Id);
+        HttpContext.Response.Cookies.Append("user_Id", user.Id);
 
-            user.Password = changeUserModel.Password;
+        return RedirectToAction("Profile");
+    }
+    [HttpGet]
+    public IActionResult ChangePassword()
+    {
+        return View();
+    }
+    [HttpPost]
+    public IActionResult ChangePassword(ChangeUserModel changeUserModel)
+    {
+        changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
+        var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
 
-            HttpContext.Response.Cookies.Append("user_Id", user.Id);
+        user.Password = changeUserModel.Password;
 
-            return RedirectToAction("Profile");
-        }
+        HttpContext.Response.Cookies.Append("user_Id", user.Id);
 
-        [HttpGet]
-        public IActionResult ChangePhoto()
-        {
-            return View();
-        }
-        [HttpPost]
-        public IActionResult ChangePhoto(ChangeUserModel changeUserModel)
-        {
-            changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
+        return RedirectToAction("Profile");
+    }
 
-            var user = UserService.Users.FirstOrDefault(u => u.Id == changeUserModel.Id);
+    [HttpGet]
+    public IActionResult ChangePhoto()
+    {
+        return View();
+    }
+    [HttpPost]
+    public IActionResult ChangePhoto(ChangeUserModel changeUserModel)
+    {
+        changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
+        var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
 
-            user.PhotoPath = UserService.SavePhoto(changeUserModel.Photo);
+        user.PhotoPath = UserService.SavePhoto(changeUserModel.Photo);
 
-            HttpContext.Response.Cookies.Append("user_Id", user.Id);
+        HttpContext.Response.Cookies.Append("user_Id", user.Id);
 
-            return RedirectToAction("Profile");
-        }
+        return RedirectToAction("Profile");
     }
 }
