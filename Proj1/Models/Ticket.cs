@@ -5,6 +5,7 @@ namespace AutoTestBot.Models;
 public class Ticket
 {
     public int Id { get; set; }
+    public int Ticket_Id { get; set; }
     public string? UserId { get; set; }
     public int QuestionsCount { get; set; }
     public int StartIndex { get; set; }

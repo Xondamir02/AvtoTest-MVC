@@ -51,7 +51,7 @@
     box-shadow: 0 0rem 3rem rgba(8,7,16,0.6)!important;">
     <div class="card-body" style="width: 13%">
          <img src="/Image/A1.jpg" class="card-img-top" alt="RASM">
-        <h2 class="card-title">Ticket @(ticket.Index + 1)</h2>
+        <h2 class="card-title">Ticket @(ticket.Id + 1)</h2>
 
             @if (ticket.Answers.Count > 0)
             { 
@@ -59,7 +59,7 @@
                 <h5 class="card-text">@ticket.Date.ToString("f")</h5>
             }
 
-        <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Index" class="btn btn-primary">Start</a>
+        <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Id" class="btn btn-primary">Start</a>
     </div>
 </div>
 
@@ -87,17 +87,17 @@
     </thead>
     <tbody>
     
-    @for (int i=0; i < Model.Tickets.Count; i++)
-    {
-        var ticketResult = Model.Tickets[i];
+        @for (int i=0; i < Model.Tickets.Count; i++)
+        {
+            var ticketResult = Model.Tickets[i];
 
-        <tr>
-            <th scope="row">@(i+1)</th>
-            <td>@ticketResult.Index</td>
-            <td>@ticketResult.CorrectCount</td>
-            <td>@ticketResult.QuestionsCount</td>
-        </tr>
-    }
+            <tr>
+                <th scope="row">@(i+1)</th>
+                <td>@(ticketResult.Ticket_Id + 1)</td>
+                <td>@ticketResult.CorrectCount</td>
+                <td>@ticketResult.QuestionsCount</td>
+            </tr>
+        }
 
     </tbody>
 </table>

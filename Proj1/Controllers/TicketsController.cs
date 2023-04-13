@@ -13,8 +13,6 @@ namespace Proj1.Controllers
             if (user == null)
                 return RedirectToAction("SignIn", "Users");
 
-
-
             return View(user);
         }
 

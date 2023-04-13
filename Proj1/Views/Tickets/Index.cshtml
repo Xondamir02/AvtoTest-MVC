@@ -12,7 +12,7 @@
             <div class="card" style="width: 11%;">
               <img src="/Image/A1.jpg" class="card-img-top" alt="RASM">
           <div class="card-body">
-                 <h5 class="card-title">Ticket @(ticket.Index + 1)</h5>
+                 <h5 class="card-title">Ticket @(ticket.Id + 1)</h5>
                 <div class="card-text">
 
                     @{
@@ -35,7 +35,7 @@
 
 
                     </div>
-                    <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Index" class="btn btn-primary "> Start</a>
+                    <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Id" class="btn btn-primary "> Start</a>
           </div>
         </div>
     }

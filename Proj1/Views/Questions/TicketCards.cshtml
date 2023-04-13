@@ -1,26 +1,26 @@
 ﻿<h1>Ticket</h1>
 
 
-
 <div class="row col-lg-12 col-md-12 col-sm-12 gap-3 d-flex justify-content-center">
-@for (int i = 1; i <= 70; i++)
-{
-            int correctAnswerCount = 0;
-            if (i == ViewBag.TicketIndex+1)
-            {
-                correctAnswerCount = ViewBag.CorrectCount;
-            }
 
-        <div class="card" style="width: 11%;">
-          <img src="/Image/A1.jpg" class="card-img-top" alt="RASM">
-      <div class="card-body">
-        <h5 class="card-title">Ticket @i</h5>
-            <div class="card-text">
-              
-                         <p>Correct Answer: @correctAnswerCount</p>
+    @for (int i = 0; i < 70; i++)
+    {
+        int correctAnswerCount = 0;
+        if (i == ViewBag.TicketIndex+1)
+        {
+            correctAnswerCount = ViewBag.CorrectCount;
+        }
+
+        <div class="card" style="width: 11%;">  <img src="/Image/A1.jpg" class="card-img-top" alt="RASM">
+            <div class="card-body">  
+                <h5 class="card-title">Ticket @i</h5>
+
+                <div class="card-text">  
+                    <p>Correct Answer: @correctAnswerCount</p>
                     <p>Question Count: 10</p>
                 </div>
-        @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
-      </div>
-    </div>}
-}
+                @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
+            </div>
+        </div>
+    }
+</div>

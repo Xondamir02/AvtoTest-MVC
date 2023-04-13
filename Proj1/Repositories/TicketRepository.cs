@@ -13,7 +13,6 @@ public class TicketRepository
     {
         _connection = new SqliteConnection("Data Source=AvtoTest.db");
 
-
         _connection.Open();
 
         CreateTicketTable();
@@ -22,17 +21,18 @@ public class TicketRepository
     private void CreateTicketTable()
     {
         var command = _connection.CreateCommand();
-        command.CommandText = "CREATE TABLE IF NOT EXISTS tickets(id INTEGER PRIMARY KEY AUTOINCRMENT, user_id TEXT, questions_count INTEGER, start_index INTEGER, current_question_index INTEGER,date BIGINT)";
+        command.CommandText = "CREATE TABLE IF NOT EXISTS tickets(id INTEGER PRIMARY KEY AUTOINCREMENT, ticket_id INTEGER, user_id TEXT, questions_count INTEGER, start_index INTEGER, current_question_index INTEGER, date BIGINT)";
         command.ExecuteNonQuery();
 
-        command.CommandText = "CREATE TABLE IF NOT EXISTS ticket_answers(id INTEGER PRIMARY KEY AUTOINCRMENT,ticket_id INTEGER, question_index INTEGER, choice_index INTEGER, correct_index INTEGER)";
+        command.CommandText = "CREATE TABLE IF NOT EXISTS ticket_answers(id INTEGER PRIMARY KEY AUTOINCREMENT, ticket_id INTEGER, question_index INTEGER, choice_index INTEGER, correct_index INTEGER)";
         command.ExecuteNonQuery();
     }
 
     public void AddTicket(Ticket ticket)
     {
         var command = _connection.CreateCommand();
-        command.CommandText = "INSERT INTO tickets(user_id, questions_count, start_index, current_question_index, date) VALUES (@user_id, @questions_count, @start_index, @current_question_index, @date)";
+        command.CommandText = "INSERT INTO tickets(ticket_id, user_id, questions_count, start_index, current_question_index, date) VALUES (@ticket_id, @user_id, @questions_count, @start_index, @current_question_index, @date)";
+        command.Parameters.AddWithValue("ticket_id", ticket.Ticket_Id);
         command.Parameters.AddWithValue("user_id", ticket.UserId);
         command.Parameters.AddWithValue("questions_count", ticket.QuestionsCount);
         command.Parameters.AddWithValue("start_index", ticket.StartIndex);
@@ -42,7 +42,6 @@ public class TicketRepository
 
         command.Prepare();
         command.ExecuteNonQuery();
-
     }
 
     public void UpdateTicket(Ticket ticket)
@@ -68,10 +67,10 @@ public class TicketRepository
         command.ExecuteNonQuery();
     }
 
-    public Ticket GetTicket(int ticketId)
+    public Ticket? GetTicket(int ticketId)
     {
         var command = _connection.CreateCommand();
-        command.CommandText = "SELECT FROM tickets WHERE ticket_id=@id";
+        command.CommandText = "SELECT * FROM tickets WHERE ticket_id=@id";
 
         command.Parameters.AddWithValue("id", ticketId);
         command.Prepare();
@@ -80,15 +79,17 @@ public class TicketRepository
 
         while (reader.Read())
         {
-            return new Ticket()
-            {
-                Id = reader.GetInt32(0),
-                UserId = reader.GetString(1),
-                QuestionsCount = reader.GetInt32(2),
-                StartIndex = reader.GetInt32(3),
-                CurrentQuestionIndex = reader.GetInt32(4),
-                Date = DateTime.FromFileTime(reader.GetInt64(5))
-            };
+           var ticket =new Ticket()
+           {
+               Ticket_Id = reader.GetInt32(1),
+               UserId = reader.GetString(2),
+               QuestionsCount = reader.GetInt32(3),
+               StartIndex = reader.GetInt32(4),
+               CurrentQuestionIndex = reader.GetInt32(5),
+               Date = DateTime.FromFileTime(reader.GetInt64(6))
+           };
+            reader.Close();
+            return ticket;
         }
         reader.Close();
         return null;
@@ -97,7 +98,7 @@ public class TicketRepository
     public List<Ticket>? GetTicketList(string userId)
     {
         var command = _connection.CreateCommand();
-        command.CommandText = "SELECT FROM tickets WHERE user_id=@id";
+        command.CommandText = "SELECT * FROM tickets WHERE user_id=@id";
 
         command.Parameters.AddWithValue("id", userId);
         command.Prepare();
@@ -110,17 +111,17 @@ public class TicketRepository
         {
             tickets.Add(new Ticket()
             {
-                Id = reader.GetInt32(0),
-                UserId = reader.GetString(1),
-                QuestionsCount = reader.GetInt32(2),
-                StartIndex = reader.GetInt32(3),
-                CurrentQuestionIndex = reader.GetInt32(4),
-                Date = DateTime.FromFileTime(reader.GetInt64(5))
+                Ticket_Id = reader.GetInt32(1),
+                UserId = reader.GetString(2),
+                QuestionsCount = reader.GetInt32(3),
+                StartIndex = reader.GetInt32(4),
+                CurrentQuestionIndex = reader.GetInt32(5),
+                Date = DateTime.FromFileTime(reader.GetInt64(6))
             });
         }
+
         reader.Close();
         return tickets;
-
     }
 
     public void AddTicketAnswer(TicketQuestionAnswer answer)
@@ -135,14 +136,12 @@ public class TicketRepository
 
         command.Prepare();
         command.ExecuteNonQuery();
-
     }
 
     public List<TicketQuestionAnswer> GetTicketAnswers(int ticketId)
     {
-
         var command = _connection.CreateCommand();
-        command.CommandText = "SELECT FROM ticket_answers WHERE ticket_id=@id";
+        command.CommandText = "SELECT * FROM ticket_answers WHERE ticket_id=@id";
 
         command.Parameters.AddWithValue("id", ticketId);
         command.Prepare();

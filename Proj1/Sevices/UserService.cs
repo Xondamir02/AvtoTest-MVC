@@ -20,10 +20,11 @@ public static class UserService
             Password = createUser.Password!,
             Username = createUser.Username!,
             PhotoPath = SavePhoto(createUser.Photo!),
+            CurrentTicketIndex = 0,
             //Tickets = new List<Ticket>()
         };
 
-        CreateUserTickets(user);
+        CreateUserTickets(user.Id);
 
         _userRepository.AddUser(user);
 
@@ -32,7 +33,11 @@ public static class UserService
 
     public static bool LogIn(SignInUserModel signInUserModel, HttpContext httpContext)
     {
-        var user = _userRepository.GetUserByUsername(signInUserModel.Username);
+        User? user;
+        if(signInUserModel != null)
+            user = _userRepository.GetUserByUsername(signInUserModel.Username!);
+        else
+            return false;
 
         if (user == null || user.Password != signInUserModel.Password)
             return false;
@@ -71,22 +76,16 @@ public static class UserService
         httpContext.Response.Cookies.Delete(UserIdCookieKey);
     }
 
-    private static void CreateUserTickets(User user)
+    private static void CreateUserTickets(string userId)
     {
         for (var i = 0; i < QuestionService.Instance.TicketsCount; i++)
         {
             var startIndex = i * QuestionService.Instance.TicketQuestionsCount + 1;
-            //user.Tickets.Add(new Ticket()
-            //{
-            //    Id = i,
-            //    CurrentQuestionIndex = startIndex,
-            //    StartIndex = startIndex,
-            //    QuestionsCount = QuestionService.Instance.TicketQuestionsCount
-            //});
+
             _ticketRepository.AddTicket(new Ticket()
             {
-                Id = i,
-                UserId = user.Id,
+                Ticket_Id = i,
+                UserId = userId,
                 CurrentQuestionIndex = startIndex,
                 StartIndex = startIndex,
                 QuestionsCount = QuestionService.Instance.TicketQuestionsCount

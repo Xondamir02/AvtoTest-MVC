@@ -10,49 +10,51 @@ namespace Proj1.Repositories
 
         public UserRepository()
         {
-
             _connection = new SqliteConnection("Data Source=AvtoTest.db");
-
 
             _connection.Open();
 
             CreateUserTable();
-
         }
 
         private void CreateUserTable()
         {
             var command = _connection.CreateCommand();
-            command.CommandText = "CREATE TABLE IF NOT EXISTS users(id TEXT UNIQUE,username TEXT NOT NULL, password TEXT,name TEXT,photo_url TEXT,current_ticket_index INTEGER)";
+            command.CommandText = "CREATE TABLE IF NOT EXISTS users(" +
+                "id TEXT UNIQUE," +
+                "username TEXT NOT NULL, " +
+                "password TEXT," +
+                "name TEXT," +
+                "photo_url TEXT," +
+                "current_ticket_index INTEGER)";
+
             command.ExecuteNonQuery();
         }
         public void AddUser(User user)
         {
             var command = _connection.CreateCommand();
-            command.CommandText = "INSERT INTO users(id,username,password,name,photo_url) VALUES(@id,@username,@photo_url)";
+            command.CommandText = "INSERT INTO users(id,username,password,name,photo_url, current_ticket_index) VALUES(@id,@username,@password,@name,@photo_url,@current_ticket_index)";
             command.Parameters.AddWithValue("id", user.Id);
             command.Parameters.AddWithValue("username", user.Username);
             command.Parameters.AddWithValue("password", user.Password);
             command.Parameters.AddWithValue("name", user.Name);
             command.Parameters.AddWithValue("photo_url", user.PhotoPath);
+            command.Parameters.AddWithValue("current_ticket_index", user.CurrentTicketIndex);
             command.Prepare();
             command.ExecuteNonQuery();
         }
 
-        public User GetUSerById(string id)
+        public User? GetUSerById(string id)
         {
             return GetUser("id", id);
         }
 
-        public User GetUserByUsername(string username)
-
-
+        public User? GetUserByUsername(string username)
         {
             return GetUser("username", username);
         }
 
-
-        public User GetUser(string paramName, string paramValue)
+        public User? GetUser(string paramName, string paramValue)
         {
             var command = _connection.CreateCommand();
             command.CommandText = $"SELECT * FROM users WHERE {paramName} = @p";
@@ -63,7 +65,7 @@ namespace Proj1.Repositories
 
             while (reader.Read())
             {
-                return new User()
+                var user = new User()
                 {
                     Id = reader.GetString(0),
                     Username = reader.GetString(1),
@@ -72,22 +74,26 @@ namespace Proj1.Repositories
                     PhotoPath = reader.GetString(4),
                     CurrentTicketIndex = reader.GetInt32(5)
                 };
+
+                reader.Close();
+                return user;
             }
 
             reader.Close();
 
             return null;
-
         }
+
         public void UpdateUser(User user)
         {
             var command = _connection.CreateCommand();
-            command.CommandText = "UPDATE users SET  username = @username, password = @password, name = @name, photo_url = @photo_url WHERE id = @id";
+            command.CommandText = "UPDATE users SET  username = @username, password = @password, name = @name, photo_url = @photo_url, current_ticket_index = @current_ticket_index WHERE id = @id";
             command.Parameters.AddWithValue("id", user.Id);
             command.Parameters.AddWithValue("username", user.Username);
             command.Parameters.AddWithValue("password", user.Password);
             command.Parameters.AddWithValue("name", user.Name);
             command.Parameters.AddWithValue("photo_url", user.PhotoPath);
+            command.Parameters.AddWithValue("current_ticket_index", user.CurrentTicketIndex);
             command.Prepare();
             command.ExecuteNonQuery();
         }
