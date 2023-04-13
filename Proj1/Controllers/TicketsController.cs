@@ -13,6 +13,8 @@ namespace Proj1.Controllers
             if (user == null)
                 return RedirectToAction("SignIn", "Users");
 
+
+
             return View(user);
         }
 
@@ -27,7 +29,8 @@ namespace Proj1.Controllers
                 return View("NotFound");
 
             user.CurrentTicketIndex = ticketIndex;
-            user.CurrentTicket!.Date = DateTime.Now;
+            //user.CurrentTicket!.Date = DateTime.Now;
+            UserService._userRepository.UpdateUser(user);
 
             return RedirectToAction("Questions", new { id = user.CurrentTicket?.StartIndex });
         }
@@ -58,12 +61,14 @@ namespace Proj1.Controllers
             {
                 var answer = new TicketQuestionAnswer()
                 {
+                    TicketId = user.CurrentTicketIndex.Value,
                     ChoiceIndex = choiceIndex.Value,
                     QuestionIndex = id,
-                    CorrectIndex = question.Choices.IndexOf(question.Choices.First(c => c.Answer))
+                    CorrectIndex = question.Choices!.IndexOf(question.Choices.First(c => c.Answer))
                 };
 
-                user.CurrentTicket!.Answers.Add(answer);
+                // user.CurrentTicket!.Answers.Add(answer);
+                UserService._ticketRepository.AddTicketAnswer(answer);
 
                 ViewBag.Answer = answer;
             }
