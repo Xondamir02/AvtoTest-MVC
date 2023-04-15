@@ -88,6 +88,7 @@ public class TicketRepository
                CurrentQuestionIndex = reader.GetInt32(5),
                Date = DateTime.FromFileTime(reader.GetInt64(6))
            };
+            ticket.Answers=GetTicketAnswers(ticketId);
             reader.Close();
             return ticket;
         }

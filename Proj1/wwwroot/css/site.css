@@ -40,12 +40,12 @@ body {
 }
 
 .homepage {
-    background-image: url("../Image/A1.jpg");
+ /*   background-image: url("../Image/A1.jpg");
     background-position:right;
     background-size:cover;
     height: 70vh;
     width:80vh;
-    font-family: sans-serif
+    font-family: sans-serif*/
 }
 
 .homepage-h1 {

@@ -5,39 +5,27 @@
 
 
 <div class="row col-lg-12 col-md-12 col-sm-12 gap-3 d-flex justify-content-center">
-    @foreach (var ticket in Model.Tickets)
+
+
+    @for (var i = 0; i < Model.Tickets.Count; i++)
     {
-        
+        var ticket = Model.Tickets[i];
 
-            <div class="card" style="width: 11%;">
-              <img src="/Image/A1.jpg" class="card-img-top" alt="RASM">
-          <div class="card-body">
-                 <h5 class="card-title">Ticket @(ticket.Id + 1)</h5>
-                <div class="card-text">
+        <div class="card" style="width: 15%;">
+            <img src="/Image/A1.jpg" class="card-img-top" alt="RASM">
+            <div class="card-body">
+                <h4 class="card-title">Ticket @(i + 1)</h4>
 
-                    @{
-                        string time=default;
-                        string color = "text-success";
-                    }
-
-                    @if (ticket.Date==default || ticket.Date==null)
-                    {
-                         time = "Not Solved";
-                        color = "text-danger";
-                    }
-                    else
-                    {
-                        time = ticket.Date.ToString("f");
-                    }
+                @if (ticket.Answers.Count > 0)
+                {
+                    
                     <p class="card-text">@ticket.CorrectCount / @ticket.QuestionsCount</p>
-                                <p class="card-text @color "> @time</p>
-                                <br/>
+                    <p class="card-text">@ticket.Date.ToString("f")</p>
+                }
 
-
-                    </div>
-                    <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Id" class="btn btn-primary "> Start</a>
-          </div>
+                <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Id">Start</a>
+            </div>
         </div>
     }
-
+    </div>
 
