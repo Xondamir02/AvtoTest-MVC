@@ -1,7 +1,7 @@
 ﻿@using Proj1.Sevices;
 @model User
 
-<h1>Profile</h1>
+<h1>Profile</h1>@*
 <div class="center"></div>
 <div class="nima">
 <img class="rounded-circle shadow-lg"     width="250" height="250"  src="@Model.PhotoPath"/>
@@ -14,23 +14,64 @@
 </div>
 
 
-<a class="btn btn-outline-danger" asp-action="LogOut"> Log Out</a>
+<a class="btn btn-danger" asp-action="LogOut"> Log Out</a>
 </br></br></br>
-<a class="btn btn-outline-danger" asp-action="ChangeName">Change Name</a>
-<a class="btn btn-outline-danger" asp-action="ChangePhoto">Change Photo</a>
+<a class="btn btn-danger" asp-action="ChangeName">Change Name</a>
+<a class="btn btn-danger" asp-action="ChangePhoto">Change Photo</a>
 </br></br></br>
-<a class="btn btn-outline-danger" asp-action="ChangeUserName">Change Username</a>
+<a class="btn btn-danger" asp-action="ChangeUserName">Change Username</a>
 
-<a class="btn btn-outline-danger" asp-action="ChangePassword">Change Password</a>
+<a class="btn btn-danger" asp-action="ChangePassword">Change Password</a>
 </br>
-</br>
+</br>*@
 
 
+<div class="d-flex justify-content-center" style="flex-wrap:wrap;">
+
+    <div class=" row g-2 col-md-7" style="border-radius: 25px;
+    margin-top: 1rem;
+    padding: 3rem;
+    box-shadow: 0 0rem 3rem rgba(8,7,16,0.6)!important;">
+    <div class="card-body" style="width: 8%">
+        <div class="center"></div>
+        <div class="nima">
+            <img class="rounded-circle shadow-lg" width="250" height="250" src="@Model.PhotoPath" />
+        </div>
+        <div class="text-center">
+            <h3>Name: @Model.Name</h3>
+            <h3>UserName: @Model.Username</h3>
+            <h3>Password: @Model.Password</h3>
+        </div>
+        <a class="btn btn-danger" asp-action="LogOut"> Log Out</a>
+        </br></br></br>
+        <a class="btn btn-danger" asp-action="ChangeName">Change Name</a>
+        <a class="btn btn-danger" asp-action="ChangePhoto">Change Photo</a>
+        </br></br></br>
+        <a class="btn btn-danger" asp-action="ChangeUserName">Change Username</a>
+
+        <a class="btn btn-danger" asp-action="ChangePassword">Change Password</a>
+        </br>
+        </br>
+                        
+                <h1>Total Correct Answers : @Model.Tickets.Sum(t=>t.CorrectCount) / @QuestionService.Instance.Questions.Count</h1>
+                <h1>TotalFinishedTickets: @Model.Tickets.Count(t=>t.IsCompleted) / @QuestionService.Instance.TicketsCount</h1>
+                         
+                            
+                         
+                            
+                            
+                                       
+                                 <span >Joined May,2021</span> 
+                                            
+       </div>                             
+        </div> 
+    
+</div>
+<style>
+
+</style>
 
 
-
-<h1>TotalCorrect: @Model.Tickets.Sum(t=>t.CorrectCount) / @QuestionService.Instance.Questions.Count</h1>
-<h1>TotalFinishedTickets: @Model.Tickets.Count(t=>t.IsCompleted) / @QuestionService.Instance.TicketsCount</h1>
 
 @{
     var lastweek = Model.Tickets
