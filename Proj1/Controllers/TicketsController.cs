@@ -65,7 +65,7 @@ namespace Proj1.Controllers
                     CorrectIndex = question.Choices!.IndexOf(question.Choices.First(c => c.Answer))
                 };
 
-                // user.CurrentTicket!.Answers.Add(answer);
+                //user.CurrentTicket!.Answers.Add(answer);
                 UserService._ticketRepository.AddTicketAnswer(answer);
 
                 ViewBag.Answer = answer;

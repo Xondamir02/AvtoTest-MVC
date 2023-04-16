@@ -87,7 +87,8 @@ namespace Proj1.Repositories
         public void UpdateUser(User user)
         {
             var command = _connection.CreateCommand();
-            command.CommandText = "UPDATE users SET  username = @username, password = @password, name = @name, photo_url = @photo_url, current_ticket_index = @current_ticket_index WHERE id = @id";
+            command.CommandText = "UPDATE users SET  username = @username, password = @password, name = @name, " +
+                "photo_url = @photo_url, current_ticket_index = @current_ticket_index WHERE id = @id";
             command.Parameters.AddWithValue("id", user.Id);
             command.Parameters.AddWithValue("username", user.Username);
             command.Parameters.AddWithValue("password", user.Password);
@@ -97,6 +98,55 @@ namespace Proj1.Repositories
             command.Prepare();
             command.ExecuteNonQuery();
         }
+
+
+        public void UpdateName(ChangeUserModel changeUserModel,User user)
+        {
+            user.Name = changeUserModel.Name;
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE users SET name = @name WHERE id=@id";
+            command.Parameters.AddWithValue("name", user.Name);
+            command.Parameters.AddWithValue("id", user.Id);
+            command.Prepare();
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateUsername(ChangeUserModel changeUserModel, User user)
+        {
+            user.Username = changeUserModel.Username;
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE users SET username = @username WHERE id=@id";
+            command.Parameters.AddWithValue("username", user.Username);
+            command.Parameters.AddWithValue("id", user.Id);
+            command.Prepare();
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateUserPhoto(string photoPath,User user)
+        {
+            user.PhotoPath = photoPath;
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE users SET photo_url = @photo_url WHERE id=@id";
+            command.Parameters.AddWithValue("photo_url", user.PhotoPath);
+            command.Parameters.AddWithValue("id", user.Id);
+            command.Prepare();
+            command.ExecuteNonQuery();
+        }
+
+        public void UpdateUserPassword(ChangeUserModel changeUserModel, User user)
+        {
+            user.Password = changeUserModel.Password;
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE users SET password =@password WHERE id=@id";
+            command.Parameters.AddWithValue("password", user.Password);
+            command.Parameters.AddWithValue("id", user.Id);
+            command.Prepare();
+            command.ExecuteNonQuery();
+        }
+
+
+
+
 
     }
 

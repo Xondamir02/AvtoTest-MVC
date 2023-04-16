@@ -92,11 +92,15 @@ public class UsersController : Controller
     {
         changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
         var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
+
+
         //var user = UserService.Users.FirstOrDefault(u => u.Id == changeUserModel.Id);
         //var user=UserService._userRepository.GetUSerById(user.Id);
-        user.Name = changeUserModel.Name;
-
+        //user.Name = changeUserModel.Name;
+        
+        UserService._userRepository.UpdateName(changeUserModel,user);
         HttpContext.Response.Cookies.Append("user_Id", user.Id);
+        
 
         return RedirectToAction("Profile");
 
@@ -113,7 +117,7 @@ public class UsersController : Controller
         changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
         var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
 
-        user.Username = changeUserModel.Username;
+        UserService._userRepository.UpdateUsername(changeUserModel, user);
 
         HttpContext.Response.Cookies.Append("user_Id", user.Id);
 
@@ -130,7 +134,7 @@ public class UsersController : Controller
         changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
         var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
 
-        user.Password = changeUserModel.Password;
+       UserService._userRepository.UpdateUserPassword(changeUserModel,user);
 
         HttpContext.Response.Cookies.Append("user_Id", user.Id);
 
@@ -148,7 +152,11 @@ public class UsersController : Controller
         changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
         var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
 
-        user.PhotoPath = UserService.SavePhoto(changeUserModel.Photo);
+        
+
+        string photoPath = UserService.SavePhoto(changeUserModel.Photo);
+
+        UserService._userRepository.UpdateUserPhoto(photoPath,user);
 
         HttpContext.Response.Cookies.Append("user_Id", user.Id);
 
