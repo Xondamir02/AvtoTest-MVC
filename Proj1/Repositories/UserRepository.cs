@@ -133,16 +133,16 @@ namespace Proj1.Repositories
             command.ExecuteNonQuery();
         }
 
-        //public void UpdateUserPassword(ChangeUserModel changeUserModel, User user)
-        //{
-        //    user.Password = changeUserModel.Password;
-        //    var command = _connection.CreateCommand();
-        //    command.CommandText = "UPDATE users SET password =@password WHERE id=@id";
-        //    command.Parameters.AddWithValue("password", user.Password);
-        //    command.Parameters.AddWithValue("id", user.Id);
-        //    command.Prepare();
-        //    command.ExecuteNonQuery();
-        //}
+        public void UpdateUserPassword(ChangeUserModel changeUserModel, User user)
+        {
+            user.Password = changeUserModel.Password;
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE users SET password =@password WHERE id=@id";
+            command.Parameters.AddWithValue("password", user.Password);
+            command.Parameters.AddWithValue("id", user.Id);
+            command.Prepare();
+            command.ExecuteNonQuery();
+        }
 
 
 
