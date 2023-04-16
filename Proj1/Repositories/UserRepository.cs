@@ -122,16 +122,16 @@ namespace Proj1.Repositories
             command.ExecuteNonQuery();
         }
 
-        //public void UpdateUserPhoto(string photoPath,User user)
-        //{
-        //    user.PhotoPath = photoPath;
-        //    var command = _connection.CreateCommand();
-        //    command.CommandText = "UPDATE users SET photo_url = @photo_url WHERE id=@id";
-        //    command.Parameters.AddWithValue("photo_url", user.PhotoPath);
-        //    command.Parameters.AddWithValue("id", user.Id);
-        //    command.Prepare();
-        //    command.ExecuteNonQuery();
-        //}
+        public void UpdateUserPhoto(string photoPath, User user)
+        {
+            user.PhotoPath = photoPath;
+            var command = _connection.CreateCommand();
+            command.CommandText = "UPDATE users SET photo_url = @photo_url WHERE id=@id";
+            command.Parameters.AddWithValue("photo_url", user.PhotoPath);
+            command.Parameters.AddWithValue("id", user.Id);
+            command.Prepare();
+            command.ExecuteNonQuery();
+        }
 
         //public void UpdateUserPassword(ChangeUserModel changeUserModel, User user)
         //{
