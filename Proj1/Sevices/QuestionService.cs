@@ -5,9 +5,6 @@ namespace Proj1.Sevices
 {
     public class QuestionService
     {
-        private static QuestionService? _instance;
-
-        public static QuestionService Instance => _instance ??= new QuestionService();
 
         public List<QuestionModel> Questions;
 

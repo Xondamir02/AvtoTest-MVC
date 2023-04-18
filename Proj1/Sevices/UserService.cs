@@ -4,14 +4,22 @@ using Proj1.Repositories;
 
 namespace Proj1.Sevices;
 
-public static class UserService
+public  class UserService
 {
     //public static List<User> Users = new List<User>();
 
-    private const string UserIdCookieKey = "user_id";
-    public static readonly TicketRepository _ticketRepository = new TicketRepository();
-    public static readonly UserRepository _userRepository = new UserRepository();
-    public static void Register(CreateUserModel createUser, HttpContext httpContext)
+     private const string UserIdCookieKey = "user_id";
+    public readonly TicketRepository _ticketRepository;
+    public readonly UserRepository _userRepository;
+    private readonly QuestionService _questionService;
+
+    public UserService(TicketRepository ticketRepository, UserRepository userRepository, QuestionService questionService)
+    {
+        _ticketRepository = ticketRepository;
+        _userRepository = userRepository;
+        _questionService = questionService;
+    }
+    public  void Register(CreateUserModel createUser, HttpContext httpContext)
     {
         var user = new User
         {
@@ -31,7 +39,7 @@ public static class UserService
         httpContext.Response.Cookies.Append(UserIdCookieKey, user.Id);
     }
 
-    public static bool LogIn(SignInUserModel signInUserModel, HttpContext httpContext)
+    public  bool LogIn(SignInUserModel signInUserModel, HttpContext httpContext)
     {
         User? user;
         if(signInUserModel != null)
@@ -47,7 +55,7 @@ public static class UserService
         return true;
     }
 
-    public static User? GetCurrentUser(HttpContext context)
+    public  User? GetCurrentUser(HttpContext context)
     {
         if (context.Request.Cookies.ContainsKey(UserIdCookieKey))
         {
@@ -60,7 +68,7 @@ public static class UserService
         return null;
     }
 
-    public static bool IsLoggedIn(HttpContext context)
+    public  bool IsLoggedIn(HttpContext context)
     {
         if (!context.Request.Cookies.ContainsKey(UserIdCookieKey)) return false;
 
@@ -71,16 +79,16 @@ public static class UserService
     }
 
 
-    public static void LogOut(HttpContext httpContext)
+    public  void LogOut(HttpContext httpContext)
     {
         httpContext.Response.Cookies.Delete(UserIdCookieKey);
     }
 
-    private static void CreateUserTickets(string userId)
+    private  void CreateUserTickets(string userId)
     {
-        for (var i = 0; i < QuestionService.Instance.TicketsCount; i++)
+        for (var i = 0; i < _questionService.TicketsCount; i++)
         {
-            var startIndex = i * QuestionService.Instance.TicketQuestionsCount + 1;
+            var startIndex = i * _questionService.TicketQuestionsCount + 1;
 
             _ticketRepository.AddTicket(new Ticket()
             {
@@ -88,12 +96,12 @@ public static class UserService
                 UserId = userId,
                 CurrentQuestionIndex = startIndex,
                 StartIndex = startIndex,
-                QuestionsCount = QuestionService.Instance.TicketQuestionsCount
+                QuestionsCount = _questionService.TicketQuestionsCount
             });
         }
     }
 
-    public static string SavePhoto(IFormFile file)
+    public  string SavePhoto(IFormFile file)
     {
         if (!Directory.Exists("wwwroot/UserImages"))
             Directory.CreateDirectory("wwwroot/UserImages");

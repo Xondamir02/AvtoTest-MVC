@@ -6,6 +6,20 @@ namespace Proj1.Controllers;
 
 public class UsersController : Controller
 {
+
+
+    private readonly UserService _usersService;
+    private readonly QuestionService _questionService;
+
+    public UsersController(UserService usersService, QuestionService questionService)
+    {
+        _usersService = usersService;
+        _questionService = questionService;
+    }
+
+
+
+
     [HttpGet]
     public IActionResult SignUp()
     {
@@ -32,7 +46,7 @@ public class UsersController : Controller
             return View();
         }
         
-        UserService.Register(createUser, HttpContext);
+        _usersService.Register(createUser, HttpContext);
 
         return RedirectToAction("Index", "Home");
     }
@@ -46,7 +60,7 @@ public class UsersController : Controller
     [HttpPost]
     public IActionResult SignIn(SignInUserModel signInUserModel)
     {
-        var user = UserService._userRepository.GetUserByUsername(signInUserModel.Username!);
+        var user = _usersService._userRepository.GetUserByUsername(signInUserModel.Username!);
 
         if (user == null || user.Password != signInUserModel.Password)
             return RedirectToAction("SignIn");
@@ -58,7 +72,7 @@ public class UsersController : Controller
 
     public IActionResult Profile()
     {
-        var user = UserService.GetCurrentUser(HttpContext);
+        var user = _usersService.GetCurrentUser(HttpContext);
 
         if (user == null)
         {
@@ -70,14 +84,14 @@ public class UsersController : Controller
 
     public IActionResult LogOut()
     {
-        UserService.LogOut(HttpContext);
+        _usersService.LogOut(HttpContext);
 
         return RedirectToAction("SignIn");
     }
 
     public IActionResult ChangeLanguage(string language)
     {
-        QuestionService.Instance.LoadJson(language);
+        _questionService.LoadJson(language);
 
         return RedirectToAction("Index", "Home");
     }
@@ -91,14 +105,14 @@ public class UsersController : Controller
     public IActionResult ChangeName(ChangeUserModel changeUserModel)
     {
         changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
-        var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
+        var user = _usersService._userRepository.GetUSerById(changeUserModel.Id);
 
 
         //var user = UserService.Users.FirstOrDefault(u => u.Id == changeUserModel.Id);
         //var user=UserService._userRepository.GetUSerById(user.Id);
         //user.Name = changeUserModel.Name;
         
-        UserService._userRepository.UpdateName(changeUserModel,user);
+        _usersService._userRepository.UpdateName(changeUserModel,user);
         HttpContext.Response.Cookies.Append("user_Id", user.Id);
         
 
@@ -115,9 +129,9 @@ public class UsersController : Controller
     public IActionResult ChangeUserName(ChangeUserModel changeUserModel)
     {
         changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
-        var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
+        var user = _usersService._userRepository.GetUSerById(changeUserModel.Id);
 
-        UserService._userRepository.UpdateUsername(changeUserModel, user);
+        _usersService._userRepository.UpdateUsername(changeUserModel, user);
 
         HttpContext.Response.Cookies.Append("user_Id", user.Id);
 
@@ -132,9 +146,9 @@ public class UsersController : Controller
     public IActionResult ChangePassword(ChangeUserModel changeUserModel)
     {
         changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
-        var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
+        var user = _usersService._userRepository.GetUSerById(changeUserModel.Id);
 
-       UserService._userRepository.UpdateUserPassword(changeUserModel,user);
+       _usersService._userRepository.UpdateUserPassword(changeUserModel,user);
 
         HttpContext.Response.Cookies.Append("user_Id", user.Id);
 
@@ -150,13 +164,13 @@ public class UsersController : Controller
     public IActionResult ChangePhoto(ChangeUserModel changeUserModel)
     {
         changeUserModel.Id = HttpContext.Request.Cookies["user_Id"];
-        var user = UserService._userRepository.GetUSerById(changeUserModel.Id);
+        var user = _usersService._userRepository.GetUSerById(changeUserModel.Id);
 
         
 
-        string photoPath = UserService.SavePhoto(changeUserModel.Photo);
+        string photoPath = _usersService.SavePhoto(changeUserModel.Photo);
 
-        UserService._userRepository.UpdateUserPhoto(photoPath,user);
+        _usersService._userRepository.UpdateUserPhoto(photoPath,user);
 
         HttpContext.Response.Cookies.Append("user_Id", user.Id);
 

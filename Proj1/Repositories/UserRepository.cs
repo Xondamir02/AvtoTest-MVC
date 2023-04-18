@@ -7,9 +7,10 @@ namespace Proj1.Repositories
     {
 
         private readonly SqliteConnection _connection;
-
-        public UserRepository()
+        private readonly TicketRepository _ticketRepository;
+        public UserRepository(TicketRepository ticketRepository)
         {
+            _ticketRepository = ticketRepository;
             _connection = new SqliteConnection("Data Source=AvtoTest.db");
 
             _connection.Open();
@@ -67,14 +68,15 @@ namespace Proj1.Repositories
             {
                 var user = new User()
                 {
-                    Id = reader.GetString(0),
+                    Id = (string)reader["id"],
                     Username = reader.GetString(1),
                     Password = reader.GetString(2),
                     Name = reader.GetString(3),
                     PhotoPath = reader.GetString(4),
                     CurrentTicketIndex = reader.GetInt32(5)
                 };
-
+                user.CurrentTicket = user.CurrentTicketIndex == null ? null : _ticketRepository.GetTicket(user.CurrentTicketIndex.Value);
+                user.Tickets = _ticketRepository.GetTicketList(user.Id);
                 reader.Close();
                 return user;
             }

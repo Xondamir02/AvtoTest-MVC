@@ -23,7 +23,7 @@
                     <p class="card-text">@ticket.Date.ToString("f")</p>
                 }
 
-                <a asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Id">Start</a>
+                <a class="btn btn-primary" asp-controller="Tickets" asp-action="StartTicket" asp-route-ticketIndex="@ticket.Ticket_Id">Start</a>
             </div>
         </div>
     }

@@ -1,8 +1,20 @@
 ﻿@using Proj1.Sevices;
 @model User
+@inject QuestionService QuestionsService
 
 <h1>Profile</h1>
 
+@*
+<div class="center"></div>
+<div class="nima">
+<img class="rounded-circle shadow-lg"     width="250" height="250"  src="@Model.PhotoPath"/>
+</div>
+<div class="text-center">
+<h3>Name: @Model.Name</h3>
+<h3>UserName: @Model.Username</h3>
+<h3>Password: @Model.Password</h3>
+</br>
+</div>
 
 
 <a class="btn btn-danger" asp-action="LogOut"> Log Out</a>
@@ -15,6 +27,7 @@
 <a class="btn btn-danger" asp-action="ChangePassword">Change Password</a>
 </br>
 </br>*@
+
 
 <div class="d-flex justify-content-center" style="flex-wrap:wrap;">
 
@@ -42,9 +55,9 @@
         <a class="btn btn-danger" asp-action="ChangePassword">Change Password</a>
         </br>
         </br>
-                        
-                <h1>Total Correct Answers : @Model.Tickets.Sum(t=>t.CorrectCount) / @QuestionService.Instance.Questions.Count</h1>
-                <h1>TotalFinishedTickets: @Model.Tickets.Count(t=>t.IsCompleted) / @QuestionService.Instance.TicketsCount</h1>
+
+            <h1>Total Correct Answers : @Model.Tickets.Sum(t=>t.CorrectCount) / @QuestionsService.Questions.Count</h1>
+            <h1>TotalFinishedTickets: @Model.Tickets.Count(t=>t.IsCompleted) / @QuestionsService.TicketsCount</h1>
                          
                             
                          

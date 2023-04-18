@@ -1,7 +1,16 @@
+using Proj1.Repositories;
+using Proj1.Sevices;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+ 
+builder.Services.AddTransient<UserRepository>();
+builder.Services.AddTransient<TicketRepository>();
+builder.Services.AddTransient<UserService>();
+builder.Services.AddSingleton<QuestionService>();
+
 
 var app = builder.Build();
 

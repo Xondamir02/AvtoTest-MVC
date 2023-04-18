@@ -6,9 +6,19 @@ namespace Proj1.Controllers
 {
     public class TicketsController : Controller
     {
+
+        private readonly UserService _usersService;
+        private readonly QuestionService _questionService;
+
+        public TicketsController(UserService usersService, QuestionService questionService)
+        {
+            _usersService = usersService;
+            _questionService = questionService;
+        }
+
         public IActionResult Index()
         {
-            var user = UserService.GetCurrentUser(HttpContext);
+            var user = _usersService.GetCurrentUser(HttpContext);
 
             if (user == null)
                 return RedirectToAction("SignIn", "Users");
@@ -18,24 +28,26 @@ namespace Proj1.Controllers
 
         public IActionResult StartTicket(int ticketIndex)
         {
-            var user = UserService.GetCurrentUser(HttpContext);
+            var user = _usersService.GetCurrentUser(HttpContext);
 
             if (user == null)
                 return RedirectToAction("SignIn", "Users");
 
-            if (QuestionService.Instance.TicketsCount <= ticketIndex)
+            if (_questionService.TicketsCount <= ticketIndex)
                 return View("NotFound");
 
             user.CurrentTicketIndex = ticketIndex;
             //user.CurrentTicket!.Date = DateTime.Now;
-            UserService._userRepository.UpdateUser(user);
+            user.CurrentTicketIndex = ticketIndex;
+            user.CurrentTicket = user.CurrentTicketIndex == null ? null: _usersService._ticketRepository.GetTicket(user.CurrentTicketIndex.Value);
+            _usersService._userRepository.UpdateUser(user);
 
             return RedirectToAction("Questions", new { id = user.CurrentTicket?.StartIndex });
         }
 
         public IActionResult Questions(int id, int? choiceIndex = null)
         {
-            User? user = UserService.GetCurrentUser(HttpContext);
+            User? user = _usersService.GetCurrentUser(HttpContext);
             if (user == null)
                 return RedirectToAction("SignIn", "Users");
 
@@ -47,7 +59,7 @@ namespace Proj1.Controllers
                 return RedirectToAction(nameof(Result));
             }
 
-            var question = QuestionService.Instance.Questions?.FirstOrDefault(x => x.Id == id);
+            var question = _questionService.Questions?.FirstOrDefault(x => x.Id == id);
 
             if (question == null)
                 return View("NotFound");
@@ -66,7 +78,7 @@ namespace Proj1.Controllers
                 };
 
                 //user.CurrentTicket!.Answers.Add(answer);
-                UserService._ticketRepository.AddTicketAnswer(answer);
+                _usersService._ticketRepository.AddTicketAnswer(answer);
 
                 ViewBag.Answer = answer;
             }
@@ -76,7 +88,7 @@ namespace Proj1.Controllers
 
         public IActionResult Result()
         {
-            var user = UserService.GetCurrentUser(HttpContext);
+            var user = _usersService.GetCurrentUser(HttpContext);
 
             if (user == null)
                 return RedirectToAction("SignIn", "Users");
@@ -86,9 +98,9 @@ namespace Proj1.Controllers
         public IActionResult CheckUser()
         {
 
-            if (UserService.IsLoggedIn(HttpContext))
+            if (_usersService.IsLoggedIn(HttpContext))
             {
-                var user = UserService.GetCurrentUser(HttpContext);
+                var user = _usersService.GetCurrentUser(HttpContext);
 
 
                 if (user == null)

@@ -1,4 +1,5 @@
 ﻿@using Proj1.Sevices;
+@inject UserService UsersService
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,7 +59,7 @@
 
 
                         </li>
-                        @if (!UserService.IsLoggedIn(Context))
+                        @if (!UsersService.IsLoggedIn(Context))
                         {
                                     <li class="nav-item">
                                         <a class="btn btn-primary" asp-area="" asp-controller="Users" asp-action="SignUp" asp-route-id="1">Sign Up</a>

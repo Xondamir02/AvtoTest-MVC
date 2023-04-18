@@ -11,19 +11,9 @@ public class User
     public string? Name { get; set; }
     public string? PhotoPath { get; set; }
     public int? CurrentTicketIndex { get; set; }
-    public Ticket? CurrentTicket
-    {
-        get
-        {
-            if (CurrentTicketIndex == null)
-            {
-                return null;
-            }
-            return UserService._ticketRepository.GetTicket(CurrentTicketIndex.Value);
-        }
-    }
+    public Ticket? CurrentTicket { get; set; }
 
-    public List<Ticket> Tickets => UserService._ticketRepository.GetTicketList(Id);
+    public List<Ticket> Tickets { get; set; }
 
 }
 
